@@ -1,0 +1,6 @@
+{
+  "name": "LUXORA – Luxury Accessories & High Horology",
+  "description": "Curated luxury accessories, high horology timepieces, and 18K fine jewelry crafted with enduring elegance. Seamless offline shopping, gesture navigation, and bespoke service.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

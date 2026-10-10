@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --bg-primary: #fbfaf8;
+    --bg-secondary: #f4f1ea;
+    --bg-tertiary: #ece8df;
+    --bg-card: #ffffff;
+    --text-primary: #171513;
+    --text-secondary: #635f58;
+    --text-muted: #8c867d;
+    --border-color: rgba(212, 175, 55, 0.22);
+    --gold-primary: #c5a059;
+    --gold-hover: #b08a42;
+    --gold-light: #dfc282;
+    --gold-glow: rgba(197, 160, 89, 0.2);
+  }
+
+  .dark {
+    --bg-primary: #0c0b0a;
+    --bg-secondary: #141312;
+    --bg-tertiary: #1c1b19;
+    --bg-card: #141312;
+    --text-primary: #f5f2eb;
+    --text-secondary: #a39e93;
+    --text-muted: #6e6a62;
+    --border-color: rgba(212, 175, 55, 0.2);
+    --gold-primary: #d4af37;
+    --gold-hover: #e6ca65;
+    --gold-light: #faeab1;
+    --gold-glow: rgba(212, 175, 55, 0.25);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-cormorant {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* Gold Gradient utilities */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fdf4cf 0%, #d4af37 40%, #aa8328 80%, #f0d57e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #d4af37 0%, #c5a059 50%, #aa8328 100%);
+}
+
+.gold-border-glow {
+  box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.35);
+}
+
+/* Custom Luxury Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(12, 11, 10, 0.05);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.8);
+}
+
+/* Hide scrollbar for carousel gestures while keeping scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 2px;
+}
+
+/* Mobile safe area insets */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+

@@ -1,0 +1,75 @@
+export type Category = 'all' | 'watches' | 'jewelry' | 'accessories' | 'jerseys' | 'new-arrivals';
+
+export type ActivePage = 'shop' | 'about';
+
+export type Currency = 'NGN' | 'USD' | 'GBP' | 'EUR';
+
+export interface Product {
+  id: string;
+  name: string;
+  subtitle: string;
+  category: 'watches' | 'jewelry' | 'accessories' | 'jerseys';
+  price: number;
+  originalPrice?: number;
+  description: string;
+  craftsmanship: string;
+  materials: string[];
+  dimensions: string;
+  inStock: boolean;
+  stockCount: number;
+  isNew?: boolean;
+  isFeatured?: boolean;
+  isBestseller?: boolean;
+  images: string[];
+  rating: number;
+  reviewsCount: number;
+  sku: string;
+  specs: Record<string, string>;
+  colors?: { name: string; hex: string }[];
+}
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
+  selectedColor?: string;
+  monogram?: string;
+  giftWrap?: boolean;
+}
+
+export interface WishlistItem {
+  product: Product;
+  addedAt: string;
+}
+
+export interface Order {
+  id: string;
+  date: string;
+  items: CartItem[];
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  currency: Currency;
+  status: 'Confirmed' | 'Processing' | 'Dispatched' | 'Delivered';
+  trackingNumber: string;
+  shippingDetails: {
+    fullName: string;
+    email: string;
+    phone?: string;
+    address: string;
+    city: string;
+    country: string;
+    postalCode: string;
+  };
+  deliveryMethod: string;
+  paymentMethod: string;
+}
+
+export interface FilterOptions {
+  category: Category;
+  maxPrice: number;
+  sortBy: 'featured' | 'price-asc' | 'price-desc' | 'rating' | 'newest';
+  material?: string;
+  searchQuery?: string;
+}

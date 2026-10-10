@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    <title>Arie Jewelry &amp; Accessories – Authentic, Affordable &amp; Elegant</title>
+    <meta name="description" content="Authentic, affordable, and elegant jewelry, wristwatches, fashion accessories, and football jerseys with nationwide delivery across Nigeria." />
+    
+    <!-- PWA & Mobile Web App meta -->
+    <meta name="theme-color" content="#0d0c0b" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Arie Jewelry" />
+    
+    <!-- OpenGraph Social Cards -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Arie Jewelry and Accessories" />
+    <meta property="og:title" content="Arie Jewelry &amp; Accessories – Authentic, Affordable &amp; Elegant" />
+    <meta property="og:description" content="Authentic, affordable, and elegant jewelry, wristwatches, fashion accessories, and jerseys with nationwide delivery across Nigeria." />
+    <meta property="og:image" content="/images/arie-logo.png" />
+    
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Arie Jewelry &amp; Accessories – Authentic, Affordable &amp; Elegant" />
+    <meta name="twitter:description" content="Authentic, affordable, and elegant jewelry, wristwatches, fashion accessories, and jerseys with nationwide delivery across Nigeria." />
+    <meta name="twitter:image" content="/images/arie-logo.png" />
+
+    <!-- Google Fonts for Editorial Luxury Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="icon" type="image/png" href="/images/arie-logo.png" />
+    <link rel="apple-touch-icon" href="/images/arie-logo.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Schema.org JSON-LD Structured Data for Arie Jewelry & Catalog -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "Arie Jewelry and Accessories",
+      "description": "Online store selling authentic, affordable, and elegant jewelry, wristwatches, fashion accessories, and jerseys.",
+      "url": "https://ariejewelry.com",
+      "telephone": "+234-816-490-7596",
+      "priceRange": "₦₦",
+      "currenciesAccepted": "NGN,USD,GBP,EUR",
+      "paymentAccepted": "Bank Transfer, Cash on Delivery, Card",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Opposite Army Barracks",
+        "addressLocality": "Lokoja",
+        "addressRegion": "Kogi State",
+        "addressCountry": "NG"
+      }
+    }
+    </script>
+    <!-- Instant Theme Synchronization to prevent FOUC -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('arie_theme') || localStorage.getItem('luxora_theme');
+          var theme = (saved === 'light' || saved === 'dark') ? saved : 'dark';
+          document.documentElement.classList.remove('dark', 'light');
+          document.documentElement.classList.add(theme);
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch(e) {}
+      })();
+    </script>
+  </head>
+  <body class="antialiased min-h-screen selection:bg-[#d4af37]/30 selection:text-[#b08a42] dark:selection:text-[#f3e5ab]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
