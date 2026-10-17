@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Product, CartItem, WishlistItem, Order, Currency, Category, FilterOptions, ActivePage } from '../types';
-import { PRODUCTS, CURRENCY_RATES } from '../data/products';
+import { Product, CartItem, WishlistItem, Order, Currency, Category, FilterOptions, ActivePage, ProductCategory } from '../types';
+import { PRODUCTS, CURRENCY_RATES, DEFAULT_CATEGORIES } from '../data/products';
 
 interface ShopContextType {
   // Navigation
@@ -37,6 +37,9 @@ interface ShopContextType {
 
   // Catalog & Filters
   products: Product[];
+  categories: ProductCategory[];
+  refreshCategories: () => Promise<void>;
+  refreshProducts: () => Promise<void>;
   filterOptions: FilterOptions;
   setFilterOptions: React.Dispatch<React.SetStateAction<FilterOptions>>;
   filteredProducts: Product[];
@@ -84,10 +87,14 @@ const STORAGE_KEYS = {
 };
 
 export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Navigation: 'shop' or 'about'
+  // Navigation: 'shop' | 'about' | 'admin' | 'admin-login'
   const [activePage, setActivePageState] = useState<ActivePage>(() => {
     if (typeof window !== 'undefined') {
-      if (window.location.hash.toLowerCase() === '#about') return 'about';
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      if (path === '/admin/login' || hash === '#admin/login' || hash === '#/admin/login') return 'admin-login';
+      if (path.startsWith('/admin') || hash === '#admin' || hash === '#/admin') return 'admin';
+      if (path === '/about' || hash === '#about') return 'about';
     }
     return 'shop';
   });
@@ -95,22 +102,64 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const setActivePage = (page: ActivePage) => {
     setActivePageState(page);
     if (typeof window !== 'undefined') {
-      window.location.hash = page === 'about' ? 'about' : '';
+      if (page === 'admin-login') {
+        window.history.pushState({}, '', '/admin/login');
+        window.location.hash = 'admin/login';
+      } else if (page === 'admin') {
+        window.history.pushState({}, '', '/admin');
+        window.location.hash = 'admin';
+      } else if (page === 'about') {
+        window.history.pushState({}, '', '/#about');
+        window.location.hash = 'about';
+      } else {
+        window.history.pushState({}, '', '/');
+        window.location.hash = '';
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   useEffect(() => {
-    const handleHashChange = () => {
-      if (window.location.hash.toLowerCase() === '#about') {
+    const syncRouteFromLocation = () => {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      if (path === '/admin/login' || hash === '#admin/login' || hash === '#/admin/login') {
+        setActivePageState('admin-login');
+      } else if (path.startsWith('/admin') || hash === '#admin' || hash === '#/admin') {
+        setActivePageState('admin');
+      } else if (path === '/about' || hash === '#about') {
         setActivePageState('about');
       } else {
         setActivePageState('shop');
       }
     };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+
+    window.addEventListener('hashchange', syncRouteFromLocation);
+    window.addEventListener('popstate', syncRouteFromLocation);
+    return () => {
+      window.removeEventListener('hashchange', syncRouteFromLocation);
+      window.removeEventListener('popstate', syncRouteFromLocation);
+    };
   }, []);
+
+  // Manage <meta name="robots" content="noindex, nofollow"> for admin pages
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    let robotsMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+
+    if (activePage === 'admin' || activePage === 'admin-login') {
+      if (!robotsMeta) {
+        robotsMeta = document.createElement('meta');
+        robotsMeta.name = 'robots';
+        document.head.appendChild(robotsMeta);
+      }
+      robotsMeta.content = 'noindex, nofollow';
+    } else {
+      if (robotsMeta) {
+        robotsMeta.remove();
+      }
+    }
+  }, [activePage]);
 
   // Theme state: default dark, supports light mode toggle
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -125,7 +174,7 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [currency, setCurrency] = useState<Currency>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem(STORAGE_KEYS.CURRENCY);
-      if (saved && CURRENCY_RATES[saved]) return saved as Currency;
+      if (saved && Object.prototype.hasOwnProperty.call(CURRENCY_RATES, saved)) return saved as Currency;
     }
     return 'NGN';
   });
@@ -187,6 +236,8 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isVIPModalOpen, setIsVIPModalOpen] = useState(false);
 
   // Filters & Navigation
+  const [categories, setCategories] = useState<ProductCategory[]>(DEFAULT_CATEGORIES);
+  const [productsList, setProductsList] = useState<Product[]>(PRODUCTS);
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     category: 'all',
@@ -194,6 +245,35 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     sortBy: 'featured',
     searchQuery: ''
   });
+
+  const refreshCategories = async () => {
+    try {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.categories) && data.categories.length > 0) {
+        setCategories(data.categories);
+      }
+    } catch {
+      // Fallback to default categories
+    }
+  };
+
+  const refreshProducts = async () => {
+    try {
+      const res = await fetch('/api/products');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.products) && data.products.length > 0) {
+        setProductsList(data.products);
+      }
+    } catch {
+      // Fallback to default products
+    }
+  };
+
+  useEffect(() => {
+    refreshCategories();
+    refreshProducts();
+  }, []);
 
   // Online status
   const [isOnline, setIsOnline] = useState<boolean>(
@@ -456,13 +536,30 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   })();
 
   // Filtered products list
-  const filteredProducts = PRODUCTS.filter(prod => {
+  const filteredProducts = productsList.filter(prod => {
     // Category filter
     if (selectedCategory !== 'all') {
       if (selectedCategory === 'new-arrivals') {
         if (!prod.isNew) return false;
-      } else if (prod.category !== selectedCategory) {
-        return false;
+      } else if (selectedCategory === 'jewelry') {
+        const jewelryCategories = ['jewelry', 'rings', 'necklaces', 'bracelets', 'jewelry-sets'];
+        const isJewelry =
+          jewelryCategories.includes(prod.category) ||
+          (prod.tags && prod.tags.some(t => ['jewelry', 'ring', 'rings', 'necklace', 'necklaces', 'bracelet', 'bracelets', 'jewelry-sets'].includes(t.toLowerCase())));
+        if (!isJewelry) return false;
+      } else if (selectedCategory === 'accessories') {
+        const accessoryCategories = ['accessories', 'belts', 'caps-hats', 'eyewear', 'watches'];
+        const isAccessory =
+          accessoryCategories.includes(prod.category) ||
+          (prod.tags && prod.tags.some(t => ['accessories', 'accessory', 'belt', 'belts', 'caps-hats', 'cap', 'caps', 'hat', 'hats', 'eyewear', 'glasses', 'watch', 'watches'].includes(t.toLowerCase())));
+        if (!isAccessory) return false;
+      } else {
+        const catNorm = selectedCategory.toLowerCase().trim();
+        const matchesCategory =
+          prod.category.toLowerCase() === catNorm ||
+          (prod.tags && prod.tags.some(t => t.toLowerCase() === catNorm || t.toLowerCase().includes(catNorm))) ||
+          categories.some(c => (c.id.toLowerCase() === catNorm || c.slug?.toLowerCase() === catNorm || c.name.toLowerCase() === catNorm) && (c.id === prod.category || c.slug === prod.category));
+        if (!matchesCategory) return false;
       }
     }
 
@@ -477,11 +574,15 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // Search query
     if (filterOptions.searchQuery && filterOptions.searchQuery.trim() !== '') {
       const q = filterOptions.searchQuery.toLowerCase();
+      const catObj = categories.find(c => c.id === prod.category || c.slug === prod.category);
+      const categoryName = catObj ? catObj.name.toLowerCase() : '';
       const match =
         prod.name.toLowerCase().includes(q) ||
         prod.subtitle.toLowerCase().includes(q) ||
         prod.description.toLowerCase().includes(q) ||
         prod.category.toLowerCase().includes(q) ||
+        categoryName.includes(q) ||
+        (prod.tags && prod.tags.some(t => t.toLowerCase().includes(q))) ||
         prod.materials.some(m => m.toLowerCase().includes(q));
       if (!match) return false;
     }
@@ -527,7 +628,10 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         wishlist,
         toggleWishlist,
         isInWishlist,
-        products: PRODUCTS,
+        products: productsList,
+        categories,
+        refreshCategories,
+        refreshProducts,
         filterOptions,
         setFilterOptions,
         filteredProducts,

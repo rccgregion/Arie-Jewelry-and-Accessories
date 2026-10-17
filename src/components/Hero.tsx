@@ -7,11 +7,11 @@ export const Hero: React.FC = () => {
   const { products, setQuickViewProduct, addToCart, setSelectedCategory, formatPrice } = useShop();
   const [activePin, setActivePin] = useState<string | null>(null);
 
-  // Products featured in the hero image
-  const watchProduct = products.find(p => p.id === 'arie-watch-gold-01') || products[0];
-  const necklaceProduct = products.find(p => p.id === 'arie-pendant-gold-04') || products[3];
-  const ringProduct = products.find(p => p.id === 'arie-ring-sparkle-07') || products[6];
-  const accessoryProduct = products.find(p => p.id === 'arie-cufflinks-lapel-15') || products[14];
+  // Products featured in the hero ensemble
+  const watchProduct = products.find(p => p.category === 'watches' && p.price >= 20000) || products.find(p => p.category === 'watches') || products[0];
+  const necklaceProduct = products.find(p => p.category === 'necklaces') || products[1];
+  const ringProduct = products.find(p => p.category === 'rings') || products[2];
+  const accessoryProduct = products.find(p => p.category === 'bracelets' || p.category === 'belts' || p.category === 'caps-hats') || products[3];
 
   const handleShopCollection = () => {
     setSelectedCategory('all');

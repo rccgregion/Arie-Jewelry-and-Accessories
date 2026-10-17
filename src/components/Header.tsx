@@ -31,6 +31,7 @@ export const Header: React.FC = () => {
     setIsVIPModalOpen,
     selectedCategory,
     setSelectedCategory,
+    setFilterOptions,
     isOnline,
     vipTier
   } = useShop();
@@ -58,14 +59,17 @@ export const Header: React.FC = () => {
 
   const handleCategoryClick = (cat: Category) => {
     setActivePage('shop');
+    setFilterOptions(prev => ({ ...prev, searchQuery: '', material: undefined }));
     setSelectedCategory(cat);
     setIsMobileMenuOpen(false);
     setTimeout(() => {
       const catalogEl = document.getElementById('catalog-section');
       if (catalogEl) {
-        catalogEl.scrollIntoView({ behavior: 'smooth' });
+        const yOffset = -70;
+        const y = catalogEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
       }
-    }, 50);
+    }, 80);
   };
 
   const handleAboutClick = () => {

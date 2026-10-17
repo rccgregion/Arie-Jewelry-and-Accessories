@@ -12,49 +12,66 @@ interface CategoryCardItem {
 }
 
 export const CategoryShowcase: React.FC = () => {
-  const { setSelectedCategory } = useShop();
+  const { setSelectedCategory, setFilterOptions, categories: dynamicCategories } = useShop();
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const categories: CategoryCardItem[] = [
-    {
-      id: 'watches',
-      title: 'WRISTWATCHES',
-      subtitle: 'Precision quartz, steel & gold link timepieces.',
-      image: '/images/products/prod-watch-gold.jpg',
-      alt: 'Arie Luxury Wristwatches Collection'
-    },
-    {
-      id: 'jewelry',
-      title: 'JEWELRY SETS',
-      subtitle: 'Necklaces, earrings, rings & bridal statement pieces.',
-      image: '/images/products/prod-necklace-set.jpg',
-      alt: 'Arie Fine Jewelry and Sets'
-    },
-    {
-      id: 'accessories',
-      title: 'SUITING & SHADES',
-      subtitle: 'Cufflinks, lapel pins, ties & UV400 sunglasses.',
-      image: '/images/products/prod-cufflinks-lapel.jpg',
-      alt: 'Arie Gentleman Accessories'
-    },
-    {
-      id: 'jerseys',
-      title: 'FOOTBALL JERSEYS',
-      subtitle: 'Authentic club and national team match editions.',
-      image: '/images/products/prod-jersey-club.jpg',
-      alt: 'Arie Football Jerseys'
-    }
-  ];
+  const categories: CategoryCardItem[] = dynamicCategories.length > 0 
+    ? dynamicCategories.slice(0, 10).map(c => ({
+        id: c.id,
+        title: c.name.toUpperCase(),
+        subtitle: c.description || `Explore handcrafted ${c.name.toLowerCase()} in our boutique.`,
+        image: c.image || '/images/drive-products/11rClAXsv29Ge_oBbKfrvLJMjRjMGkIXo.jpg',
+        alt: `Arie ${c.name} Collection`
+      }))
+    : [
+        {
+          id: 'watches',
+          title: 'WRISTWATCHES',
+          subtitle: 'Precision quartz, steel & gold link timepieces.',
+          image: '/images/products/prod-watch-gold.jpg',
+          alt: 'Arie Luxury Wristwatches Collection'
+        },
+        {
+          id: 'necklaces',
+          title: 'NECKLACES & PENDANTS',
+          subtitle: 'Gold medallions, herringbone chokers & layered sets.',
+          image: '/images/products/prod-pendant-gold.jpg',
+          alt: 'Arie Fine Necklaces and Pendants'
+        },
+        {
+          id: 'rings',
+          title: 'RINGS & BANDS',
+          subtitle: 'Solitaires, cocktail rings and textured signets.',
+          image: '/images/products/prod-ring-sparkle.jpg',
+          alt: 'Arie Designer Rings'
+        },
+        {
+          id: 'earrings',
+          title: 'EARRINGS & STUDS',
+          subtitle: 'Radiant drops, chunky hoops and minimalist studs.',
+          image: '/images/products/prod-earrings-drop.jpg',
+          alt: 'Arie Fine Earrings'
+        }
+      ];
 
   const handleCategorySelect = (catId: Category) => {
+    setFilterOptions(prev => ({
+      ...prev,
+      searchQuery: '',
+      material: undefined
+    }));
     setSelectedCategory(catId);
-    const catalogEl = document.getElementById('catalog-section');
-    if (catalogEl) {
-      catalogEl.scrollIntoView({ behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      const catalogEl = document.getElementById('catalog-section');
+      if (catalogEl) {
+        const yOffset = -70;
+        const y = catalogEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }, 80);
   };
 
   const handleScroll = () => {

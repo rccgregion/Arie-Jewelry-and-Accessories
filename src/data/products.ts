@@ -1,619 +1,6558 @@
-import { Product } from '../types';
+import { Product, ProductCategory, Currency } from "../types/index";
+
+export const CURRENCY_RATES: Record<Currency, { symbol: string; rate: number; name: string }> = {
+  NGN: { symbol: "₦", rate: 1, name: "Nigerian Naira" },
+  USD: { symbol: "$", rate: 1 / 1500, name: "US Dollar" },
+  GBP: { symbol: "£", rate: 1 / 1900, name: "British Pound" },
+  EUR: { symbol: "€", rate: 1 / 1650, name: "Euro" }
+};
+
+export const DEFAULT_CATEGORIES: ProductCategory[] = [
+  {
+    "id": "watches",
+    "name": "Wristwatches & Smartwatches",
+    "slug": "watches",
+    "description": "Luxury leather wristwatches, smartwatches, Poedagar, Cartier and timepiece sets.",
+    "image": "/images/drive-products/11rClAXsv29Ge_oBbKfrvLJMjRjMGkIXo.jpg",
+    "displayOrder": 1,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.191Z"
+  },
+  {
+    "id": "jerseys",
+    "name": "Football & Sports Jerseys",
+    "slug": "jerseys",
+    "description": "Authentic club editions, national team kits, retro football jerseys and basketball jerseys.",
+    "image": "/images/drive-products/1pRcKdfADwvwBm12LbN2kxgJIy16yQ0d7.jpg",
+    "displayOrder": 2,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.192Z"
+  },
+  {
+    "id": "polo-shirts",
+    "name": "Polo Shirts & Tees",
+    "slug": "polo-shirts",
+    "description": "Premium cotton polo shirts and quality tees with multi-size options from M to 4XL.",
+    "image": "/images/drive-products/1mtrs4jvjWhcPE3P2FodKbLKWEmcoQ22L.jpg",
+    "displayOrder": 3,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.192Z"
+  },
+  {
+    "id": "caps-hats",
+    "name": "Caps, Hats & Truckers",
+    "slug": "caps-hats",
+    "description": "Unisex face caps, graphic trucker hats, designer fashion hats and sun headwear.",
+    "image": "/images/drive-products/1zoxg3aIMgvwg5m5WGD4KzIDSVkgaZZVC.jpg",
+    "displayOrder": 4,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.192Z"
+  },
+  {
+    "id": "rings",
+    "name": "Rings & Knuckle Bands",
+    "slug": "rings",
+    "description": "Statement knuckle rings, male signet rings, crystal cocktail bands and stacking rings.",
+    "image": "/images/drive-products/1xyEP5P3RiblFTAcraddlMlwUATeEwDzD.jpg",
+    "displayOrder": 5,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.192Z"
+  },
+  {
+    "id": "bracelets",
+    "name": "Bracelets & Bangles",
+    "slug": "bracelets",
+    "description": "Acrylic bracelets, electroplated gold charm bracelets and masculine link cuffs.",
+    "image": "/images/drive-products/1w2BZ13-SWNNnFX43o63yGPWJ94fzu3-O.jpg",
+    "displayOrder": 6,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.192Z"
+  },
+  {
+    "id": "necklaces",
+    "name": "Necklaces & Chains",
+    "slug": "necklaces",
+    "description": "Electroplated gold pendants, neck chain pieces and delicate layered necklaces.",
+    "image": "/images/drive-products/1s-dTOQMgv_00k1p46pd-Q6h1Mo5GLnFB.jpg",
+    "displayOrder": 7,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.192Z"
+  },
+  {
+    "id": "jewelry-sets",
+    "name": "Jewelry Sets & Gift Boxes",
+    "slug": "jewelry-sets",
+    "description": "Owambe party jewelry sets, matching earring-necklace combos and girlie gift boxes.",
+    "image": "/images/drive-products/129h1-4FZ1_Y10G-S6HgDgqg0ng3gLH2F.jpg",
+    "displayOrder": 8,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.192Z"
+  },
+  {
+    "id": "belts",
+    "name": "Designer Belts",
+    "slug": "belts",
+    "description": "Dual-head interchangeable buckle belts and quality female genuine leather waistbands.",
+    "image": "/images/drive-products/1pvHr83aDhrDgcaehacEioD7iYK-rvKE_.jpg",
+    "displayOrder": 9,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.192Z"
+  },
+  {
+    "id": "eyewear",
+    "name": "Designer Glasses & Sunglasses",
+    "slug": "eyewear",
+    "description": "Bayonetta optical frames and unisex tinted UV protective glasses.",
+    "image": "/images/drive-products/1uKInPdw2EDRNnwpowj_el2Z8rSSL-zR_.jpg",
+    "displayOrder": 10,
+    "isSystem": true,
+    "createdAt": "2026-10-16T10:12:42.192Z"
+  }
+];
 
 export const PRODUCTS: Product[] = [
-  // WRISTWATCHES
   {
-    id: 'arie-watch-gold-01',
-    name: 'Royal Chronos Gold Timepiece',
-    subtitle: 'High-Luster Gold Link Watch with Obsidian Sunray Dial',
-    category: 'watches',
-    price: 48500,
-    originalPrice: 55000,
-    description: 'A striking statement of presence and authority. Finished in rich gold-toned stainless steel with a high-contrast obsidian black dial, precision quartz movement, fluted bezel, and folding deployment clasp.',
-    craftsmanship: 'Assembled with stainless steel links and double-locking butterfly clasp for everyday resilience and water resistance.',
-    materials: ['Gold-Finished 316L Stainless Steel', 'Hardened Mineral Crystal Glass', 'Japanese Quartz Caliber'],
-    dimensions: 'Case Diameter: 41 mm / Band Width: 20 mm',
-    inStock: true,
-    stockCount: 8,
-    isFeatured: true,
-    isBestseller: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-watch-gold.jpg',
-      '/images/products/prod-watch-chain.jpg'
+    "id": "arie-drive-01",
+    "name": "Gold Tone Luxury Wristwatch",
+    "slug": "gold-tone-luxury-wristwatch",
+    "subtitle": "Polished Gold Stainless Steel Link Timepiece",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured",
+      "bestseller",
+      "new-arrival"
     ],
-    rating: 4.9,
-    reviewsCount: 42,
-    sku: 'ARIE-WTC-001',
-    specs: {
-      'Movement': 'High-Precision Quartz Caliber',
-      'Glass': 'Scratch-resistant Hardened Crystal',
-      'Water Resistance': 'Splash Resistant (3 ATM)',
-      'Clasp': 'Folding Safety Clasp',
-      'Warranty': '1 Year Arie Guarantee'
+    "price": 15000,
+    "originalPrice": 17500,
+    "description": "Commanding presence with refined aesthetic accents. Seamlessly transitions between formal suiting and elevated weekend attire.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": true,
+    "isFeatured": true,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1OlZwVgAPR4x1qKK3lpzlIcXq7MIAqnQs.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 15,
+    "sku": "ARIE-WAT-001",
+    "specs": {
+      "Movement": "Precision Quartz",
+      "Clasp": "Safety Deployment Clasp",
+      "Warranty": "1 Year Guarantee"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-01-v1",
+          "sku": "ARIE-WAT-001-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1OlZwVgAPR4x1qKK3lpzlIcXq7MIAqnQs.jpg"
+        },
+        {
+          "id": "arie-drive-01-v2",
+          "sku": "ARIE-WAT-001-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1OlZwVgAPR4x1qKK3lpzlIcXq7MIAqnQs.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-watch-chronograph-02',
-    name: 'Executive Chronograph Black Dial Watch',
-    subtitle: 'Multi-Dial Chronograph with Date Display',
-    category: 'watches',
-    price: 52000,
-    originalPrice: 58000,
-    description: 'Designed for the modern professional. Features functional multi-dial sub-registers, luminous hands for night legibility, and an integrated solid link bracelet.',
-    craftsmanship: 'Heavyweight links engineered for maximum comfort and commanding presence.',
-    materials: ['Polished Stainless Steel', 'Gold PVD Accents', 'Hardlex Crystal'],
-    dimensions: 'Case Diameter: 42 mm / Band Width: 22 mm',
-    inStock: true,
-    stockCount: 6,
-    isFeatured: true,
-    isNew: true,
-    images: [
-      '/images/products/prod-watch-chronograph.jpg',
-      '/images/products/prod-watch-gold.jpg'
+    "id": "arie-drive-02",
+    "name": "Acrylic Charm Bracelet",
+    "slug": "acrylic-charm-bracelet",
+    "subtitle": "Translucent Sculpted Acrylic Link Bracelet",
+    "category": "bracelets",
+    "tags": [
+      "bracelets",
+      "authentic",
+      "luxury",
+      "jewelry"
     ],
-    rating: 5.0,
-    reviewsCount: 29,
-    sku: 'ARIE-WTC-002',
-    specs: {
-      'Functions': 'Time, 24-Hour Indicator, Stopwatch',
-      'Strap': 'Solid Stainless Steel Link Bracelet',
-      'Dial': 'Deep Obsidian Sunburst'
+    "price": 3000,
+    "description": "Modern wrist charm crafted with seamless balance and fluid movement. Adds an instant touch of flair to your watch pairing or solo wear.",
+    "craftsmanship": "Interlocking hand-assembled links with mirror polish and heavy-duty magnetic / folding clasp.",
+    "materials": [
+      "Electroplated Steel / Lucite Acrylic",
+      "Resin Elements"
+    ],
+    "dimensions": "Length: 19-21cm | Width: 6-12mm",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1Qrv_P_bWr7330CdchYwW9FqxEERJPMAi.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 17,
+    "sku": "ARIE-BRA-002",
+    "specs": {
+      "Style": "Link / Beaded / Bangle",
+      "Clasp": "Secure Locking Clasp"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Wrist Circumference",
+          "values": [
+            "Standard Fit (18-20cm)",
+            "Relaxed Fit (21-23cm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-02-v1",
+          "sku": "ARIE-BRA-002-FIT1",
+          "name": "Standard Fit (18-20cm)",
+          "options": {
+            "Wrist Circumference": "Standard Fit (18-20cm)"
+          },
+          "priceKobo": 300000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1Qrv_P_bWr7330CdchYwW9FqxEERJPMAi.jpg"
+        },
+        {
+          "id": "arie-drive-02-v2",
+          "sku": "ARIE-BRA-002-FIT2",
+          "name": "Relaxed Fit (21-23cm)",
+          "options": {
+            "Wrist Circumference": "Relaxed Fit (21-23cm)"
+          },
+          "priceKobo": 300000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1Qrv_P_bWr7330CdchYwW9FqxEERJPMAi.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-watch-chain-03',
-    name: 'Classic Two-Tone Metal Link Watch',
-    subtitle: 'Understated Elegance for Business & Formal Gatherings',
-    category: 'watches',
-    price: 42000,
-    description: 'Versatile styling that pairs effortlessly with corporate suits or weekend outfits. Crisp baton hour markers on a champagne dial.',
-    craftsmanship: 'Seamless link transitions with micro-adjustment links included.',
-    materials: ['Stainless Steel', 'Electrolytic Gold Accent', 'Quartz Mechanism'],
-    dimensions: 'Case Diameter: 39 mm',
-    inStock: true,
-    stockCount: 10,
-    isFeatured: false,
-    isNew: false,
-    images: [
-      '/images/products/prod-watch-chain.jpg',
-      '/images/products/prod-watch-chronograph.jpg'
+    "id": "arie-drive-03",
+    "name": "Football Jersey Kit",
+    "slug": "football-jersey-kit",
+    "subtitle": "Full Matchday Performance Football Kit",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
     ],
-    rating: 4.8,
-    reviewsCount: 19,
-    sku: 'ARIE-WTC-003',
-    specs: {
-      'Style': 'Dress & Everyday Luxury',
-      'Water Resistance': '30m'
-    }
-  },
-
-  // JEWELRY - NECKLACES, EARRINGS, RINGS, BRACELETS
-  {
-    id: 'arie-pendant-gold-04',
-    name: 'Arie Signature Gold Coin Medallion',
-    subtitle: 'Embossed Celestial Sunburst Pendant & Chain',
-    category: 'jewelry',
-    price: 22500,
-    originalPrice: 26000,
-    description: 'Our most sought-after signature keepsake. Features an embossed celestial motif on a mirror-polished gold disc, suspended from a radiant twist curb chain.',
-    craftsmanship: 'Triple-dip gold electroplating ensures enduring brilliance and tarnish resistance.',
-    materials: ['18K Gold Plated Alloy', 'Anti-Tarnish Protective Seal'],
-    dimensions: 'Chain Length: 45 cm + 5 cm extender / Medallion: 20 mm',
-    inStock: true,
-    stockCount: 15,
-    isFeatured: true,
-    isBestseller: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-pendant-gold.jpg',
-      '/images/products/prod-necklace-set.jpg'
+    "price": 16000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
     ],
-    rating: 4.95,
-    reviewsCount: 57,
-    sku: 'ARIE-JWL-001',
-    specs: {
-      'Chain Style': 'Fine Cable Link with Extender',
-      'Hypoallergenic': 'Lead & Nickel Free',
-      'Pouch': 'Signature Arie Velvet Pouch'
-    }
-  },
-  {
-    id: 'arie-necklace-choker-05',
-    name: 'Statement Gold Herringbone Choker',
-    subtitle: 'Silky Fluid Gold Blade Flat Chain',
-    category: 'jewelry',
-    price: 18000,
-    description: 'Rests flat against the collarbone with mesmerizing fluid drape. Reflects golden radiance from every angle whether worn solo or layered.',
-    craftsmanship: 'Seamless precision-pressed links that bend like fabric without kinking.',
-    materials: ['18K Gold PVD Coating', 'Stainless Core Base'],
-    dimensions: 'Length: 40 cm + 6 cm extender / Width: 5 mm',
-    inStock: true,
-    stockCount: 12,
-    isFeatured: true,
-    isNew: true,
-    images: [
-      '/images/products/prod-necklace-choker.jpg',
-      '/images/products/prod-pendant-gold.jpg'
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1zEwc49aueodtO1aKtBiM062oA8HkPwZb.jpg"
     ],
-    rating: 4.9,
-    reviewsCount: 34,
-    sku: 'ARIE-JWL-002',
-    specs: {
-      'Width': '5mm Wide Profile',
-      'Finish': 'Ultra Mirror Polish'
-    }
-  },
-  {
-    id: 'arie-bridal-set-06',
-    name: 'Grand Celebration Bridal & Party Jewelry Set',
-    subtitle: 'Complete Matching Necklace, Drop Earrings, Ring & Bracelet',
-    category: 'jewelry',
-    price: 65000,
-    originalPrice: 75000,
-    description: 'The ultimate ensemble for traditional weddings, galas, and landmark celebrations. Harmonious sparkle with brilliant-cut crystals set into regal gold metalwork.',
-    craftsmanship: 'Hand-pronged crystals with secure locking mechanisms on all pieces.',
-    materials: ['Gold Plated Alloy', 'Austrian Cut Crystals', 'Hypoallergenic Backings'],
-    dimensions: 'Full 4-Piece Matching Set in Gift Case',
-    inStock: true,
-    stockCount: 5,
-    isFeatured: true,
-    isBestseller: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-bridal-set.jpg',
-      '/images/products/prod-necklace-set.jpg'
-    ],
-    rating: 5.0,
-    reviewsCount: 26,
-    sku: 'ARIE-JWL-003',
-    specs: {
-      'Pieces Included': 'Necklace, Earrings, Ring, Bracelet',
-      'Packaging': 'Deluxe Arie Presentation Box'
+    "rating": 5,
+    "reviewsCount": 19,
+    "sku": "ARIE-JER-003",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-03-v1",
+          "sku": "ARIE-JER-003-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1zEwc49aueodtO1aKtBiM062oA8HkPwZb.jpg"
+        },
+        {
+          "id": "arie-drive-03-v2",
+          "sku": "ARIE-JER-003-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1zEwc49aueodtO1aKtBiM062oA8HkPwZb.jpg"
+        },
+        {
+          "id": "arie-drive-03-v3",
+          "sku": "ARIE-JER-003-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1zEwc49aueodtO1aKtBiM062oA8HkPwZb.jpg"
+        },
+        {
+          "id": "arie-drive-03-v4",
+          "sku": "ARIE-JER-003-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1zEwc49aueodtO1aKtBiM062oA8HkPwZb.jpg"
+        },
+        {
+          "id": "arie-drive-03-v5",
+          "sku": "ARIE-JER-003-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1zEwc49aueodtO1aKtBiM062oA8HkPwZb.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-ring-sparkle-07',
-    name: 'Sparkling Solitaire Crystal Ring',
-    subtitle: 'Brilliant Crown Cut Center Stone with Pavé Band',
-    category: 'jewelry',
-    price: 14500,
-    description: 'Captures and scatters light like diamond fire. Ergonomically shaped for all-day comfort without finger pinching.',
-    craftsmanship: 'Four-prong center mount with micro-pavé shoulder setting.',
-    materials: ['18K Gold Ion Plating', 'AAA Grade Cubic Zirconia'],
-    dimensions: 'Available in US Sizes 6, 7, 8, 9',
-    inStock: true,
-    stockCount: 14,
-    isFeatured: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-ring-sparkle.jpg',
-      '/images/products/prod-ring-crystal.jpg'
+    "id": "arie-drive-04",
+    "name": "Smart Watch Ultra 19",
+    "slug": "smart-watch-ultra-19",
+    "subtitle": "Titanium Casing Smartwatch with AMOLED Display & Bluetooth Calling",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured"
     ],
-    rating: 4.88,
-    reviewsCount: 38,
-    sku: 'ARIE-JWL-004',
-    specs: {
-      'Stone Type': 'Heart & Arrow Cut Crystal',
-      'Setting': 'Four-Prong Crown'
+    "price": 34000,
+    "description": "Engineered for high connectivity and modern active lifestyle. Features clear HD digital display, health monitoring, customizable watch faces, and responsive touch interface.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1ygKZz_1vTw8lZLJfk8rQIrPIiCNtCGAN.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 21,
+    "sku": "ARIE-WAT-004",
+    "specs": {
+      "Battery Life": "Up to 5 Days",
+      "Compatibility": "iOS & Android",
+      "Sensors": "Heart Rate, Pedometer, Sleep"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-04-v1",
+          "sku": "ARIE-WAT-004-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 3400000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1ygKZz_1vTw8lZLJfk8rQIrPIiCNtCGAN.jpg"
+        },
+        {
+          "id": "arie-drive-04-v2",
+          "sku": "ARIE-WAT-004-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 3400000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1ygKZz_1vTw8lZLJfk8rQIrPIiCNtCGAN.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-mens-ring-08',
-    name: 'Textured Gold & Titanium Men\'s Signet Ring',
-    subtitle: 'Commanding Masculine Band with Geometric Faceting',
-    category: 'jewelry',
-    price: 16000,
-    description: 'A bold, heavyweight signet ring engineered for men of distinction. Satin brushed center flanked by bevelled high-polish edges.',
-    craftsmanship: 'Solid cast titanium core resistant to scratches and everyday wear.',
-    materials: ['Titanium Alloy', '18K Yellow Gold Dip'],
-    dimensions: 'Sizes 8, 9, 10, 11 / Width: 8 mm',
-    inStock: true,
-    stockCount: 11,
-    isFeatured: false,
-    isNew: true,
-    images: [
-      '/images/products/prod-mens-ring.jpg',
-      '/images/products/prod-ring-sparkle.jpg'
+    "id": "arie-drive-05",
+    "name": "Male Knuckle Rings Collection",
+    "slug": "male-knuckle-rings-collection",
+    "subtitle": "Modern Punk-Inspired Signet & Knuckle Bands",
+    "category": "rings",
+    "tags": [
+      "rings",
+      "authentic",
+      "luxury",
+      "jewelry",
+      "bestseller"
     ],
-    rating: 4.9,
-    reviewsCount: 21,
-    sku: 'ARIE-JWL-005',
-    specs: {
-      'Profile': 'Flat Top Comfort Fit',
-      'Hypoallergenic': '100% Skin Safe'
+    "price": 2000,
+    "originalPrice": 2500,
+    "description": "Intricately detailed band designed to catch the light from all angles. Can be worn solo or stacked for bold personal expression.",
+    "craftsmanship": "High-luster electroplated gold finish with comfort-fit inner band and hand-polished facets.",
+    "materials": [
+      "Gold-Finished Stainless Steel",
+      "Cubic Zirconia"
+    ],
+    "dimensions": "Band Width: 4-8mm | Comfort Fit",
+    "inStock": true,
+    "stockCount": 16,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1eq3Qmj1wA-QhzyCKSzPya2iBuJYCTT2E.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 23,
+    "sku": "ARIE-RIN-005",
+    "specs": {
+      "Finish": "High Polish / Satin Textured",
+      "Hypoallergenic": "Lead & Nickel Free"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Ring Size",
+          "values": [
+            "US 8 (18.2mm)",
+            "US 9 (19.0mm)",
+            "US 10 (19.8mm)",
+            "US 11 (20.6mm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-05-v1",
+          "sku": "ARIE-RIN-005-SZ8",
+          "name": "Ring Size US 8 (18.2mm)",
+          "options": {
+            "Ring Size": "US 8 (18.2mm)"
+          },
+          "priceKobo": 200000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1eq3Qmj1wA-QhzyCKSzPya2iBuJYCTT2E.jpg"
+        },
+        {
+          "id": "arie-drive-05-v2",
+          "sku": "ARIE-RIN-005-SZ9",
+          "name": "Ring Size US 9 (19.0mm)",
+          "options": {
+            "Ring Size": "US 9 (19.0mm)"
+          },
+          "priceKobo": 200000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1eq3Qmj1wA-QhzyCKSzPya2iBuJYCTT2E.jpg"
+        },
+        {
+          "id": "arie-drive-05-v3",
+          "sku": "ARIE-RIN-005-SZ10",
+          "name": "Ring Size US 10 (19.8mm)",
+          "options": {
+            "Ring Size": "US 10 (19.8mm)"
+          },
+          "priceKobo": 200000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1eq3Qmj1wA-QhzyCKSzPya2iBuJYCTT2E.jpg"
+        },
+        {
+          "id": "arie-drive-05-v4",
+          "sku": "ARIE-RIN-005-SZ11",
+          "name": "Ring Size US 11 (20.6mm)",
+          "options": {
+            "Ring Size": "US 11 (20.6mm)"
+          },
+          "priceKobo": 200000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1eq3Qmj1wA-QhzyCKSzPya2iBuJYCTT2E.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-ring-crystal-09',
-    name: 'Pavé Crystal Cocktail Ring',
-    subtitle: 'Multi-Row Shimmering Band for Evening Glamour',
-    category: 'jewelry',
-    price: 13500,
-    description: 'Dazzling rows of pavé crystals that catch the light effortlessly. Ideal for both milestone celebrations and stylish date nights.',
-    craftsmanship: 'Seamless channel setting that holds stones securely.',
-    materials: ['Gold Plated Brass', 'Sparkling Crystals'],
-    dimensions: 'Sizes 6 to 9',
-    inStock: true,
-    stockCount: 10,
-    isFeatured: false,
-    isNew: false,
-    images: [
-      '/images/products/prod-ring-crystal.jpg',
-      '/images/products/prod-ring-sparkle.jpg'
+    "id": "arie-drive-06",
+    "name": "Oliya High Quality Female Watch",
+    "slug": "oliya-high-quality-female-watch",
+    "subtitle": "Dainty Ceramic & Steel Women Dress Watch",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "new-arrival"
     ],
-    rating: 4.85,
-    reviewsCount: 18,
-    sku: 'ARIE-JWL-006',
-    specs: {
-      'Design': 'Multi-Row Pavé Band'
+    "price": 32000,
+    "description": "Commanding presence with refined aesthetic accents. Seamlessly transitions between formal suiting and elevated weekend attire.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 17,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1EEli7CktIc_JoxG8-AS91nLmfxwp103F.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 25,
+    "sku": "ARIE-WAT-006",
+    "specs": {
+      "Movement": "Precision Quartz",
+      "Clasp": "Safety Deployment Clasp",
+      "Warranty": "1 Year Guarantee"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-06-v1",
+          "sku": "ARIE-WAT-006-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 3200000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1EEli7CktIc_JoxG8-AS91nLmfxwp103F.jpg"
+        },
+        {
+          "id": "arie-drive-06-v2",
+          "sku": "ARIE-WAT-006-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 3200000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1EEli7CktIc_JoxG8-AS91nLmfxwp103F.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-earrings-drop-10',
-    name: 'Radiant Teardrop Gold Earrings',
-    subtitle: 'Elongated Sculptural Drop Earrings with Fluid Sway',
-    category: 'jewelry',
-    price: 12500,
-    description: 'Lightweight on the earlobe yet bold in visual impact. The teardrop silhouette flatters every jawline and neckline.',
-    craftsmanship: 'Hollow-core electroforming allows featherlight all-day wear.',
-    materials: ['Gold Dipped Alloy', 'Sterling Silver Ear Posts'],
-    dimensions: 'Drop Length: 42 mm / Width: 14 mm',
-    inStock: true,
-    stockCount: 16,
-    isFeatured: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-earrings-drop.jpg',
-      '/images/products/prod-earrings-hoop.jpg'
+    "id": "arie-drive-07",
+    "name": "Matturi Leather Wristwatch",
+    "slug": "matturi-leather-wristwatch",
+    "subtitle": "Precision Chrono Movement with Crocodile Texture Leather",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured"
     ],
-    rating: 4.92,
-    reviewsCount: 45,
-    sku: 'ARIE-JWL-007',
-    specs: {
-      'Weight': 'Just 4.5 grams per earring',
-      'Backing': 'Secure Push-Back with Comfort Disc'
+    "price": 35000,
+    "description": "Classic horological styling tailored for business meetings and evening galas. Equipped with high-precision quartz movement and hand-stitched leather strap.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 18,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/11rClAXsv29Ge_oBbKfrvLJMjRjMGkIXo.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 27,
+    "sku": "ARIE-WAT-007",
+    "specs": {
+      "Movement": "Japanese Quartz Caliber",
+      "Strap Width": "22mm",
+      "Water Resistance": "Splash Resistant (3 ATM)"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-07-v1",
+          "sku": "ARIE-WAT-007-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 3500000,
+          "stockCount": 9,
+          "image": "/images/drive-products/11rClAXsv29Ge_oBbKfrvLJMjRjMGkIXo.jpg"
+        },
+        {
+          "id": "arie-drive-07-v2",
+          "sku": "ARIE-WAT-007-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 3500000,
+          "stockCount": 9,
+          "image": "/images/drive-products/11rClAXsv29Ge_oBbKfrvLJMjRjMGkIXo.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-earrings-hoop-11',
-    name: 'Classic Chunky Gold Hoop Earrings',
-    subtitle: 'Timeless Tube Hoops with Snap-Bar Clasp',
-    category: 'jewelry',
-    price: 11000,
-    description: 'The quintessential wardrobe staple. From morning business meetings to evening dinner reservations, these chunky hoops elevate every ensemble.',
-    craftsmanship: 'Click-top latch mechanism tested for reliable everyday closure.',
-    materials: ['18K Gold IP Plating', 'Stainless Base'],
-    dimensions: 'Diameter: 30 mm / Tube Thickness: 5 mm',
-    inStock: true,
-    stockCount: 20,
-    isFeatured: false,
-    isNew: false,
-    images: [
-      '/images/products/prod-earrings-hoop.jpg',
-      '/images/products/prod-earrings-stud.jpg'
+    "id": "arie-drive-08",
+    "name": "Dual-Head Interchangeable Leather Belt",
+    "slug": "dual-head-interchangeable-leather-belt",
+    "subtitle": "Reversible Full-Grain Leather Belt with 2 Buckle Heads",
+    "category": "belts",
+    "tags": [
+      "belts",
+      "authentic",
+      "luxury",
+      "accessories"
     ],
-    rating: 4.86,
-    reviewsCount: 31,
-    sku: 'ARIE-JWL-008',
-    specs: {
-      'Closure': 'Secure Click-Top Latch'
+    "price": 45000,
+    "description": "Crafted from supple, high-grade leather with a reversible or interchangeable heavy-duty designer buckle. Adapts effortlessly from formal trousers to denim.",
+    "craftsmanship": "Hand-stitched full-grain genuine leather with solid zinc alloy buckle mechanism.",
+    "materials": [
+      "Full-Grain Cowhide Leather",
+      "Brushed Gold / Chrome Alloy Buckle"
+    ],
+    "dimensions": "Width: 3.5cm | Length: 110-125cm Adjustable",
+    "inStock": true,
+    "stockCount": 19,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1pvHr83aDhrDgcaehacEioD7iYK-rvKE_.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 29,
+    "sku": "ARIE-BEL-008",
+    "specs": {
+      "Buckle": "Dual Interchangeable Head",
+      "Adjustment": "Micro-punched Holes"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Waist Size",
+          "values": [
+            "Standard Waist (28-34\")",
+            "Extended Waist (36-42\")"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-08-v1",
+          "sku": "ARIE-BEL-008-W1",
+          "name": "Standard Waist (28-34\")",
+          "options": {
+            "Waist Size": "Standard Waist (28-34\")"
+          },
+          "priceKobo": 4500000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1pvHr83aDhrDgcaehacEioD7iYK-rvKE_.jpg"
+        },
+        {
+          "id": "arie-drive-08-v2",
+          "sku": "ARIE-BEL-008-W2",
+          "name": "Extended Waist (36-42\")",
+          "options": {
+            "Waist Size": "Extended Waist (36-42\")"
+          },
+          "priceKobo": 4500000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1pvHr83aDhrDgcaehacEioD7iYK-rvKE_.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-earrings-stud-12',
-    name: 'Minimalist Diamond-Cut Gold Studs',
-    subtitle: 'Subtle Everyday Elegance with Faceted Sparkle',
-    category: 'jewelry',
-    price: 9500,
-    description: 'Understated brilliance that works anywhere. Faceted geometric cuts catch light without needing large stones.',
-    craftsmanship: 'Double-notched posts keep earring backs locked in place.',
-    materials: ['18K Yellow Gold Plating', 'Hypoallergenic Backs'],
-    dimensions: 'Diameter: 8 mm',
-    inStock: true,
-    stockCount: 18,
-    isFeatured: false,
-    isNew: false,
-    images: [
-      '/images/products/prod-earrings-stud.jpg',
-      '/images/products/prod-earrings-drop.jpg'
+    "id": "arie-drive-09",
+    "name": "Cartier Crash Squelette Luxury Watch",
+    "slug": "cartier-crash-squelette-luxury-watch",
+    "subtitle": "Asymmetric Avant-Garde Skeleton Mechanical Aesthetic Watch",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "bestseller"
     ],
-    rating: 4.8,
-    reviewsCount: 22,
-    sku: 'ARIE-JWL-009',
-    specs: {
-      'Posts': 'Surgical Steel Hypoallergenic Posts'
+    "price": 30000,
+    "originalPrice": 34500,
+    "description": "Commanding presence with refined aesthetic accents. Seamlessly transitions between formal suiting and elevated weekend attire.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1dh6vigWG_YVHvoqBwgfz4hpsarOq0tkj.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 31,
+    "sku": "ARIE-WAT-009",
+    "specs": {
+      "Movement": "Precision Quartz",
+      "Clasp": "Safety Deployment Clasp",
+      "Warranty": "1 Year Guarantee"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-09-v1",
+          "sku": "ARIE-WAT-009-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 3000000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1dh6vigWG_YVHvoqBwgfz4hpsarOq0tkj.jpg"
+        },
+        {
+          "id": "arie-drive-09-v2",
+          "sku": "ARIE-WAT-009-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 3000000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1dh6vigWG_YVHvoqBwgfz4hpsarOq0tkj.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-bracelet-charm-13',
-    name: 'Dainty Gold Charm Link Bracelet',
-    subtitle: 'Delicate Paperclip Chain with Suspended Charms',
-    category: 'jewelry',
-    price: 15000,
-    description: 'A playful yet sophisticated addition to any wrist stack. Paperclip links provide modern flair while gold charms bring joyful movement.',
-    craftsmanship: 'Soldered jump rings ensure charms remain securely attached.',
-    materials: ['Gold Plated Alloy', 'Lobster Claw Fastener'],
-    dimensions: 'Length: 17 cm + 4 cm adjustment',
-    inStock: true,
-    stockCount: 12,
-    isFeatured: false,
-    isNew: true,
-    images: [
-      '/images/products/prod-bracelet-charm.jpg',
-      '/images/products/prod-cuff-bangle.jpg'
+    "id": "arie-drive-10",
+    "name": "Tomi Watch & Luxury Pen Set",
+    "slug": "tomi-watch-luxury-pen-set",
+    "subtitle": "Executive Gift Set with Quartz Watch and Rollerball Pen",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured"
     ],
-    rating: 4.9,
-    reviewsCount: 19,
-    sku: 'ARIE-JWL-010',
-    specs: {
-      'Adjustable': 'Fits wrists 15cm to 21cm'
+    "price": 30000,
+    "description": "Commanding presence with refined aesthetic accents. Seamlessly transitions between formal suiting and elevated weekend attire.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1NaOu286R7zWCAoTScMITipL0GfdDECe3.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 33,
+    "sku": "ARIE-WAT-010",
+    "specs": {
+      "Movement": "Precision Quartz",
+      "Clasp": "Safety Deployment Clasp",
+      "Warranty": "1 Year Guarantee"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-10-v1",
+          "sku": "ARIE-WAT-010-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 3000000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1NaOu286R7zWCAoTScMITipL0GfdDECe3.jpg"
+        },
+        {
+          "id": "arie-drive-10-v2",
+          "sku": "ARIE-WAT-010-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 3000000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1NaOu286R7zWCAoTScMITipL0GfdDECe3.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-cuff-bangle-14',
-    name: 'Sculptural Open Cuff Bangle',
-    subtitle: 'Minimalist Wave Silhouette with Polished Ball Finials',
-    category: 'jewelry',
-    price: 18500,
-    description: 'Effortless to slip on and off. Sleek sculptural gold contour wraps smoothly around the wrist.',
-    craftsmanship: 'Flexible spring-temper brass alloy allows subtle size adjustments.',
-    materials: ['Heavy Gold Dip', 'Spring Brass Core'],
-    dimensions: 'Inner Diameter: 60 mm (Gently Adjustable)',
-    inStock: true,
-    stockCount: 9,
-    isFeatured: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-cuff-bangle.jpg',
-      '/images/products/prod-bracelet-charm.jpg'
+    "id": "arie-drive-11",
+    "name": "Neck Chain & Medallion Piece",
+    "slug": "neck-chain-medallion-piece",
+    "subtitle": "Heavy Heavy Gold Rope Chain with Statement Medallion",
+    "category": "necklaces",
+    "tags": [
+      "necklaces",
+      "authentic",
+      "luxury",
+      "jewelry",
+      "new-arrival"
     ],
-    rating: 4.94,
-    reviewsCount: 28,
-    sku: 'ARIE-JWL-011',
-    specs: {
-      'Profile': 'Torque Open Cuff'
-    }
-  },
-
-  // ACCESSORIES - CUFFLINKS, TIES, SUNGLASSES
-  {
-    id: 'arie-cufflinks-lapel-15',
-    name: 'Executive Gold Cufflinks & Lapel Pin Set',
-    subtitle: 'Gentleman\'s Sartorial Suiting Companion',
-    category: 'accessories',
-    price: 17500,
-    originalPrice: 20000,
-    description: 'Sharpen your formal presence at weddings, conferences, and Sunday best. Includes matching swivel-back cufflinks and an architectural lapel pin.',
-    craftsmanship: 'Precision micro-etched geometric face with bullet-back closures.',
-    materials: ['Solid Brass with 24K Gold Tone', 'Enamel Inset'],
-    dimensions: 'Cufflink: 18 mm / Lapel Pin: 65 mm pin length',
-    inStock: true,
-    stockCount: 15,
-    isFeatured: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-cufflinks-lapel.jpg',
-      '/images/products/prod-tie-clip.jpg'
+    "price": 15000,
+    "description": "Sleek and versatile necklace that catches the golden hour light beautifully. Designed to be worn daily without fading or tarnish.",
+    "craftsmanship": "Micro-plated 18K yellow gold tone on surgical steel with secure lobster clasp.",
+    "materials": [
+      "PVD 18K Gold Finish",
+      "Hypoallergenic 316L Steel"
     ],
-    rating: 4.95,
-    reviewsCount: 39,
-    sku: 'ARIE-ACC-001',
-    specs: {
-      'Set Includes': '1 Pair Cufflinks + 1 Matching Lapel Pin',
-      'Box': 'Hard-shell Executive Case'
-    }
-  },
-  {
-    id: 'arie-tie-clip-16',
-    name: 'Gentleman\'s Silk Tie & Gold Clip Ensemble',
-    subtitle: 'Woven Jacquard Tie with Engraved Gold Tie Bar',
-    category: 'accessories',
-    price: 19000,
-    description: 'Rich fabric weave that holds an immaculate Windsor knot, paired with a spring-loaded gold tie clip that keeps neckwear straight all day.',
-    craftsmanship: 'High-density jacquard weaving with wool interlining for crease recovery.',
-    materials: ['Microfiber Silk Jacquard', 'Polished Brass Tie Bar'],
-    dimensions: 'Tie: 148 cm x 7.5 cm / Clip: 55 mm',
-    inStock: true,
-    stockCount: 12,
-    isFeatured: false,
-    isNew: true,
-    images: [
-      '/images/products/prod-tie-clip.jpg',
-      '/images/products/prod-cufflinks-lapel.jpg'
+    "dimensions": "Chain Length: 18-24 inches | Pendant: 20-35mm",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1s-dTOQMgv_00k1p46pd-Q6h1Mo5GLnFB.jpg"
     ],
-    rating: 4.88,
-    reviewsCount: 24,
-    sku: 'ARIE-ACC-002',
-    specs: {
-      'Tie Width': '7.5 cm Modern Blade',
-      'Fabric': 'Crease-Resistant Woven Jacquard'
-    }
-  },
-  {
-    id: 'arie-sunglasses-17',
-    name: 'Designer Tinted UV400 Sunglasses',
-    subtitle: 'Gradient Amber Lenses with Gold Wire Frame',
-    category: 'accessories',
-    price: 14000,
-    originalPrice: 17000,
-    description: 'Chic retro styling with modern UV protection. Protects your eyes from tropical glare while turning heads on city streets.',
-    craftsmanship: 'Silicone comfort nose pads and reinforced hinge screws.',
-    materials: ['Alloy Gold Frame', 'Polycarbonate UV400 Lenses'],
-    dimensions: 'Lens Width: 54 mm / Bridge: 18 mm / Temple: 142 mm',
-    inStock: true,
-    stockCount: 14,
-    isFeatured: true,
-    isBestseller: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-sunglasses.jpg',
-      '/images/products/prod-luxury-sunglasses.jpg'
-    ],
-    rating: 4.9,
-    reviewsCount: 47,
-    sku: 'ARIE-ACC-003',
-    specs: {
-      'Protection': '100% UV400 UVA/UVB Filter',
-      'Case': 'Protective Hard Case & Cleaning Cloth'
+    "rating": 4.9,
+    "reviewsCount": 35,
+    "sku": "ARIE-NEC-011",
+    "specs": {
+      "Chain Style": "Twist Curb / Box Link",
+      "Pouch": "Velvet Protective Pouch"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Chain Length",
+          "values": [
+            "18 inch (45cm)",
+            "20 inch (50cm)",
+            "24 inch (60cm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-11-v1",
+          "sku": "ARIE-NEC-011-18IN",
+          "name": "18 inch (45cm)",
+          "options": {
+            "Chain Length": "18 inch (45cm)"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1s-dTOQMgv_00k1p46pd-Q6h1Mo5GLnFB.jpg"
+        },
+        {
+          "id": "arie-drive-11-v2",
+          "sku": "ARIE-NEC-011-20IN",
+          "name": "20 inch (50cm)",
+          "options": {
+            "Chain Length": "20 inch (50cm)"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1s-dTOQMgv_00k1p46pd-Q6h1Mo5GLnFB.jpg"
+        },
+        {
+          "id": "arie-drive-11-v3",
+          "sku": "ARIE-NEC-011-24IN",
+          "name": "24 inch (60cm)",
+          "options": {
+            "Chain Length": "24 inch (60cm)"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1s-dTOQMgv_00k1p46pd-Q6h1Mo5GLnFB.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-luxury-sunglasses-18',
-    name: 'Square Aviator Black & Gold Sunglasses',
-    subtitle: 'Bold Architectural Frame with Smoke Black Lenses',
-    category: 'accessories',
-    price: 16500,
-    description: 'A modern upgrade to the classic aviator. Flat top brow bar and dark smoke lenses exude confidence.',
-    craftsmanship: 'Scratch-resistant anti-reflective lens coating.',
-    materials: ['Acetate & Gold-Toned Alloy', 'Polarized Polycarbonate'],
-    dimensions: 'Lens Width: 58 mm / Bridge: 16 mm',
-    inStock: true,
-    stockCount: 11,
-    isFeatured: false,
-    isNew: true,
-    images: [
-      '/images/products/prod-luxury-sunglasses.jpg',
-      '/images/products/prod-sunglasses.jpg'
+    "id": "arie-drive-12",
+    "name": "Manchester City Match Jersey",
+    "slug": "manchester-city-match-jersey",
+    "subtitle": "Sky Blue Etihad Stadium Premier League Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
     ],
-    rating: 4.92,
-    reviewsCount: 25,
-    sku: 'ARIE-ACC-004',
-    specs: {
-      'Lens': 'Category 3 UV400 Protection'
+    "price": 16000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1zMP-rs9zGNdGtiVVYW04RLlxCH16Tjqm.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 37,
+    "sku": "ARIE-JER-012",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-12-v1",
+          "sku": "ARIE-JER-012-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1zMP-rs9zGNdGtiVVYW04RLlxCH16Tjqm.jpg"
+        },
+        {
+          "id": "arie-drive-12-v2",
+          "sku": "ARIE-JER-012-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1zMP-rs9zGNdGtiVVYW04RLlxCH16Tjqm.jpg"
+        },
+        {
+          "id": "arie-drive-12-v3",
+          "sku": "ARIE-JER-012-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1zMP-rs9zGNdGtiVVYW04RLlxCH16Tjqm.jpg"
+        },
+        {
+          "id": "arie-drive-12-v4",
+          "sku": "ARIE-JER-012-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1zMP-rs9zGNdGtiVVYW04RLlxCH16Tjqm.jpg"
+        },
+        {
+          "id": "arie-drive-12-v5",
+          "sku": "ARIE-JER-012-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1zMP-rs9zGNdGtiVVYW04RLlxCH16Tjqm.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-accessories-set-19',
-    name: 'Complete Gentleman\'s Styling Gift Box',
-    subtitle: 'Tie, Pocket Square, Cufflinks, Tie Clip & Lapel Pin',
-    category: 'accessories',
-    price: 38000,
-    originalPrice: 45000,
-    description: 'The quintessential gift for groomsmen, birthdays, graduations, and executive promotions. Everything needed for an impeccable look in one curated presentation.',
-    craftsmanship: 'Color-matched accessories hand-packed in a bespoke gift box.',
-    materials: ['Woven Silk', '24K Gold Tone Metal', 'Gift Presentation Box'],
-    dimensions: '5-in-1 Comprehensive Formal Set',
-    inStock: true,
-    stockCount: 7,
-    isFeatured: true,
-    isBestseller: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-accessories-set.jpg',
-      '/images/products/prod-tie-clip.jpg'
+    "id": "arie-drive-13",
+    "name": "Super Eagles Nigeria Match Jersey",
+    "slug": "super-eagles-nigeria-match-jersey",
+    "subtitle": "Naija Naija Feather Print National Team Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "featured",
+      "bestseller"
     ],
-    rating: 5.0,
-    reviewsCount: 33,
-    sku: 'ARIE-ACC-005',
-    specs: {
-      'Includes': 'Tie, Pocket Square, Pair of Cufflinks, Tie Clip, Lapel Rose Pin'
+    "price": 16000,
+    "originalPrice": 18500,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 16,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1t6eQj2dIIwWPpEaTleLpMW9tltjmIL4Y.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 39,
+    "sku": "ARIE-JER-013",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-13-v1",
+          "sku": "ARIE-JER-013-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1t6eQj2dIIwWPpEaTleLpMW9tltjmIL4Y.jpg"
+        },
+        {
+          "id": "arie-drive-13-v2",
+          "sku": "ARIE-JER-013-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1t6eQj2dIIwWPpEaTleLpMW9tltjmIL4Y.jpg"
+        },
+        {
+          "id": "arie-drive-13-v3",
+          "sku": "ARIE-JER-013-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1t6eQj2dIIwWPpEaTleLpMW9tltjmIL4Y.jpg"
+        },
+        {
+          "id": "arie-drive-13-v4",
+          "sku": "ARIE-JER-013-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1t6eQj2dIIwWPpEaTleLpMW9tltjmIL4Y.jpg"
+        },
+        {
+          "id": "arie-drive-13-v5",
+          "sku": "ARIE-JER-013-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1t6eQj2dIIwWPpEaTleLpMW9tltjmIL4Y.jpg"
+        }
+      ]
     }
   },
-
-  // FOOTBALL JERSEYS
   {
-    id: 'arie-jersey-club-20',
-    name: 'Premium Club Edition Football Jersey',
-    subtitle: 'Breathable Moisture-Wicking Official Quality Knit',
-    category: 'jerseys',
-    price: 24000,
-    originalPrice: 28000,
-    description: 'Celebrate your passion in genuine comfort. Crafted with micro-perforated athletic fabric, embroidered club crest, and heat-pressed sponsor graphics.',
-    craftsmanship: 'Double-needle flatlock seams reduce chafing during matches or casual wear.',
-    materials: ['100% Recycled Aeroready Polyester', 'Embroidered Silicone Crest'],
-    dimensions: 'Sizes S, M, L, XL, XXL available',
-    inStock: true,
-    stockCount: 20,
-    isFeatured: true,
-    isBestseller: true,
-    isNew: false,
-    images: [
-      '/images/products/prod-jersey-club.jpg',
-      '/images/products/prod-football-jersey.jpg'
+    "id": "arie-drive-14",
+    "name": "Real Madrid Match Jersey",
+    "slug": "real-madrid-match-jersey",
+    "subtitle": "Los Blancos Classic White Home Kit Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
     ],
-    rating: 4.95,
-    reviewsCount: 52,
-    sku: 'ARIE-JSY-001',
-    specs: {
-      'Fabric': 'Dri-FIT Moisture Evaporating Mesh',
-      'Fit': 'Athletic Regular Fit',
-      'Badges': 'Authentic League & Club Patching'
+    "price": 15000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 17,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1ULgkj4VOzG4awXGraoae9sw8Wrtdg1EP.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 41,
+    "sku": "ARIE-JER-014",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-14-v1",
+          "sku": "ARIE-JER-014-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1ULgkj4VOzG4awXGraoae9sw8Wrtdg1EP.jpg"
+        },
+        {
+          "id": "arie-drive-14-v2",
+          "sku": "ARIE-JER-014-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1ULgkj4VOzG4awXGraoae9sw8Wrtdg1EP.jpg"
+        },
+        {
+          "id": "arie-drive-14-v3",
+          "sku": "ARIE-JER-014-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1ULgkj4VOzG4awXGraoae9sw8Wrtdg1EP.jpg"
+        },
+        {
+          "id": "arie-drive-14-v4",
+          "sku": "ARIE-JER-014-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1ULgkj4VOzG4awXGraoae9sw8Wrtdg1EP.jpg"
+        },
+        {
+          "id": "arie-drive-14-v5",
+          "sku": "ARIE-JER-014-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1ULgkj4VOzG4awXGraoae9sw8Wrtdg1EP.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-jersey-national-21',
-    name: 'Player Issue National Team Jersey',
-    subtitle: 'Lightweight Matchday Cut with Thermal Breathability',
-    category: 'jerseys',
-    price: 26500,
-    description: 'Vibrant national team pride woven with ultra-light competition fabric. Worn by supporters across Nigeria and international diaspora.',
-    craftsmanship: 'Seamless laser-cut ventilation zones across chest and lower back.',
-    materials: ['High-Performance Aeroknit Polyester'],
-    dimensions: 'Sizes S to XXL',
-    inStock: true,
-    stockCount: 16,
-    isFeatured: false,
-    isNew: true,
-    images: [
-      '/images/products/prod-football-jersey.jpg',
-      '/images/products/prod-jersey-club.jpg'
+    "id": "arie-drive-15",
+    "name": "Chelsea Match Jersey",
+    "slug": "chelsea-match-jersey",
+    "subtitle": "The Blues Official Club Home Match Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
     ],
-    rating: 4.9,
-    reviewsCount: 37,
-    sku: 'ARIE-JSY-002',
-    specs: {
-      'Style': 'Official Matchday Edition'
+    "price": 16000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 18,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1G6irjHh1XpUJo9qKyp2WQR9EaHKD01u1.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 43,
+    "sku": "ARIE-JER-015",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-15-v1",
+          "sku": "ARIE-JER-015-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1G6irjHh1XpUJo9qKyp2WQR9EaHKD01u1.jpg"
+        },
+        {
+          "id": "arie-drive-15-v2",
+          "sku": "ARIE-JER-015-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1G6irjHh1XpUJo9qKyp2WQR9EaHKD01u1.jpg"
+        },
+        {
+          "id": "arie-drive-15-v3",
+          "sku": "ARIE-JER-015-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1G6irjHh1XpUJo9qKyp2WQR9EaHKD01u1.jpg"
+        },
+        {
+          "id": "arie-drive-15-v4",
+          "sku": "ARIE-JER-015-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1G6irjHh1XpUJo9qKyp2WQR9EaHKD01u1.jpg"
+        },
+        {
+          "id": "arie-drive-15-v5",
+          "sku": "ARIE-JER-015-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1G6irjHh1XpUJo9qKyp2WQR9EaHKD01u1.jpg"
+        }
+      ]
     }
   },
   {
-    id: 'arie-necklace-set-22',
-    name: 'Deluxe Layered Pendant & Earrings Set',
-    subtitle: 'Dual-Layer Chain with Matching Drop Studs',
-    category: 'jewelry',
-    price: 28000,
-    description: 'A pre-styled layered look that takes the guesswork out of accessorizing. Shimmers with warm gold tones on any skin complexion.',
-    craftsmanship: 'Tangle-free dual chain connector clasp.',
-    materials: ['18K Gold Plated Brass', 'Protective Anti-Tarnish Coating'],
-    dimensions: 'Short Chain: 40 cm / Long Chain: 50 cm',
-    inStock: true,
-    stockCount: 11,
-    isFeatured: false,
-    isNew: false,
-    images: [
-      '/images/products/prod-necklace-set.jpg',
-      '/images/products/prod-pendant-gold.jpg'
+    "id": "arie-drive-16",
+    "name": "Manchester United Match Jersey",
+    "slug": "manchester-united-match-jersey",
+    "subtitle": "Red Devils Iconic Home Match Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "featured",
+      "new-arrival"
     ],
-    rating: 4.88,
-    reviewsCount: 20,
-    sku: 'ARIE-JWL-012',
-    specs: {
-      'Included': 'Layered Necklace & Matching Earrings'
+    "price": 16000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 19,
+    "isNew": true,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1-uGqycRTV2jGjCpkwLpcmFtCwoVwk2-e.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 45,
+    "sku": "ARIE-JER-016",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-16-v1",
+          "sku": "ARIE-JER-016-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-uGqycRTV2jGjCpkwLpcmFtCwoVwk2-e.jpg"
+        },
+        {
+          "id": "arie-drive-16-v2",
+          "sku": "ARIE-JER-016-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-uGqycRTV2jGjCpkwLpcmFtCwoVwk2-e.jpg"
+        },
+        {
+          "id": "arie-drive-16-v3",
+          "sku": "ARIE-JER-016-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-uGqycRTV2jGjCpkwLpcmFtCwoVwk2-e.jpg"
+        },
+        {
+          "id": "arie-drive-16-v4",
+          "sku": "ARIE-JER-016-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-uGqycRTV2jGjCpkwLpcmFtCwoVwk2-e.jpg"
+        },
+        {
+          "id": "arie-drive-16-v5",
+          "sku": "ARIE-JER-016-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-uGqycRTV2jGjCpkwLpcmFtCwoVwk2-e.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-17",
+    "name": "Classic Retro Match Jersey",
+    "slug": "classic-retro-match-jersey",
+    "subtitle": "Vintage Throwback Embroidered Football Shirt",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "bestseller"
+    ],
+    "price": 24000,
+    "originalPrice": 27500,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1siBCUpASDiSwi9iR4Bb6Rz_LmSpCR9qb.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 47,
+    "sku": "ARIE-JER-017",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-17-v1",
+          "sku": "ARIE-JER-017-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1siBCUpASDiSwi9iR4Bb6Rz_LmSpCR9qb.jpg"
+        },
+        {
+          "id": "arie-drive-17-v2",
+          "sku": "ARIE-JER-017-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1siBCUpASDiSwi9iR4Bb6Rz_LmSpCR9qb.jpg"
+        },
+        {
+          "id": "arie-drive-17-v3",
+          "sku": "ARIE-JER-017-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1siBCUpASDiSwi9iR4Bb6Rz_LmSpCR9qb.jpg"
+        },
+        {
+          "id": "arie-drive-17-v4",
+          "sku": "ARIE-JER-017-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1siBCUpASDiSwi9iR4Bb6Rz_LmSpCR9qb.jpg"
+        },
+        {
+          "id": "arie-drive-17-v5",
+          "sku": "ARIE-JER-017-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1siBCUpASDiSwi9iR4Bb6Rz_LmSpCR9qb.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-18",
+    "name": "Arsenal Retro Match Jersey",
+    "slug": "arsenal-retro-match-jersey",
+    "subtitle": "Iconic Gunner Retro Heritage Football Shirt",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
+    ],
+    "price": 24000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1THunCWqZy15siE3okVGnR9b9wqef-dCi.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 49,
+    "sku": "ARIE-JER-018",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-18-v1",
+          "sku": "ARIE-JER-018-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1THunCWqZy15siE3okVGnR9b9wqef-dCi.jpg"
+        },
+        {
+          "id": "arie-drive-18-v2",
+          "sku": "ARIE-JER-018-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1THunCWqZy15siE3okVGnR9b9wqef-dCi.jpg"
+        },
+        {
+          "id": "arie-drive-18-v3",
+          "sku": "ARIE-JER-018-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1THunCWqZy15siE3okVGnR9b9wqef-dCi.jpg"
+        },
+        {
+          "id": "arie-drive-18-v4",
+          "sku": "ARIE-JER-018-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1THunCWqZy15siE3okVGnR9b9wqef-dCi.jpg"
+        },
+        {
+          "id": "arie-drive-18-v5",
+          "sku": "ARIE-JER-018-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1THunCWqZy15siE3okVGnR9b9wqef-dCi.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-19",
+    "name": "Vintage Retro Football Jersey",
+    "slug": "vintage-retro-football-jersey",
+    "subtitle": "Classic 90s Football Culture Club Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "featured"
+    ],
+    "price": 24000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/14AgcOCi1Za2clZESP8PfFq9rW5kEzH_L.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 51,
+    "sku": "ARIE-JER-019",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-19-v1",
+          "sku": "ARIE-JER-019-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/14AgcOCi1Za2clZESP8PfFq9rW5kEzH_L.jpg"
+        },
+        {
+          "id": "arie-drive-19-v2",
+          "sku": "ARIE-JER-019-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/14AgcOCi1Za2clZESP8PfFq9rW5kEzH_L.jpg"
+        },
+        {
+          "id": "arie-drive-19-v3",
+          "sku": "ARIE-JER-019-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/14AgcOCi1Za2clZESP8PfFq9rW5kEzH_L.jpg"
+        },
+        {
+          "id": "arie-drive-19-v4",
+          "sku": "ARIE-JER-019-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/14AgcOCi1Za2clZESP8PfFq9rW5kEzH_L.jpg"
+        },
+        {
+          "id": "arie-drive-19-v5",
+          "sku": "ARIE-JER-019-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/14AgcOCi1Za2clZESP8PfFq9rW5kEzH_L.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-20",
+    "name": "Brazil National Team Jersey",
+    "slug": "brazil-national-team-jersey",
+    "subtitle": "Canarinho Gold Edition Fan Match Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
+    ],
+    "price": 18000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1DyHpqHwCnzOkz3L6yPCZXpLOEFqouGnv.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 53,
+    "sku": "ARIE-JER-020",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-20-v1",
+          "sku": "ARIE-JER-020-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1800000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1DyHpqHwCnzOkz3L6yPCZXpLOEFqouGnv.jpg"
+        },
+        {
+          "id": "arie-drive-20-v2",
+          "sku": "ARIE-JER-020-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1800000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1DyHpqHwCnzOkz3L6yPCZXpLOEFqouGnv.jpg"
+        },
+        {
+          "id": "arie-drive-20-v3",
+          "sku": "ARIE-JER-020-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1800000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1DyHpqHwCnzOkz3L6yPCZXpLOEFqouGnv.jpg"
+        },
+        {
+          "id": "arie-drive-20-v4",
+          "sku": "ARIE-JER-020-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1800000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1DyHpqHwCnzOkz3L6yPCZXpLOEFqouGnv.jpg"
+        },
+        {
+          "id": "arie-drive-20-v5",
+          "sku": "ARIE-JER-020-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1800000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1DyHpqHwCnzOkz3L6yPCZXpLOEFqouGnv.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-21",
+    "name": "Collector Retro Football Jersey",
+    "slug": "collector-retro-football-jersey",
+    "subtitle": "Rare Throwback Player Match Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "bestseller",
+      "new-arrival"
+    ],
+    "price": 25000,
+    "originalPrice": 28500,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 16,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1K5tDGGwtNgf6GE7UqjZRKICWHyvG5tW6.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 15,
+    "sku": "ARIE-JER-021",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-21-v1",
+          "sku": "ARIE-JER-021-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1K5tDGGwtNgf6GE7UqjZRKICWHyvG5tW6.jpg"
+        },
+        {
+          "id": "arie-drive-21-v2",
+          "sku": "ARIE-JER-021-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1K5tDGGwtNgf6GE7UqjZRKICWHyvG5tW6.jpg"
+        },
+        {
+          "id": "arie-drive-21-v3",
+          "sku": "ARIE-JER-021-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1K5tDGGwtNgf6GE7UqjZRKICWHyvG5tW6.jpg"
+        },
+        {
+          "id": "arie-drive-21-v4",
+          "sku": "ARIE-JER-021-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1K5tDGGwtNgf6GE7UqjZRKICWHyvG5tW6.jpg"
+        },
+        {
+          "id": "arie-drive-21-v5",
+          "sku": "ARIE-JER-021-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1K5tDGGwtNgf6GE7UqjZRKICWHyvG5tW6.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-22",
+    "name": "Barcelona Match Jersey",
+    "slug": "barcelona-match-jersey",
+    "subtitle": "Blaugrana Player-Edition Club Match Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "featured"
+    ],
+    "price": 16000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 17,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1-Nzy7xBLThwKuDsO01zCp_xgxOQzqLAb.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 17,
+    "sku": "ARIE-JER-022",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-22-v1",
+          "sku": "ARIE-JER-022-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-Nzy7xBLThwKuDsO01zCp_xgxOQzqLAb.jpg"
+        },
+        {
+          "id": "arie-drive-22-v2",
+          "sku": "ARIE-JER-022-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-Nzy7xBLThwKuDsO01zCp_xgxOQzqLAb.jpg"
+        },
+        {
+          "id": "arie-drive-22-v3",
+          "sku": "ARIE-JER-022-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-Nzy7xBLThwKuDsO01zCp_xgxOQzqLAb.jpg"
+        },
+        {
+          "id": "arie-drive-22-v4",
+          "sku": "ARIE-JER-022-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-Nzy7xBLThwKuDsO01zCp_xgxOQzqLAb.jpg"
+        },
+        {
+          "id": "arie-drive-22-v5",
+          "sku": "ARIE-JER-022-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1-Nzy7xBLThwKuDsO01zCp_xgxOQzqLAb.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-23",
+    "name": "Heritage Retro Football Jersey",
+    "slug": "heritage-retro-football-jersey",
+    "subtitle": "Commemorative Cup Final Retro Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
+    ],
+    "price": 24000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 18,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/16F8W5SRdVMwuGtXtjEb5aJ6SJaLJu6uk.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 19,
+    "sku": "ARIE-JER-023",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-23-v1",
+          "sku": "ARIE-JER-023-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/16F8W5SRdVMwuGtXtjEb5aJ6SJaLJu6uk.jpg"
+        },
+        {
+          "id": "arie-drive-23-v2",
+          "sku": "ARIE-JER-023-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/16F8W5SRdVMwuGtXtjEb5aJ6SJaLJu6uk.jpg"
+        },
+        {
+          "id": "arie-drive-23-v3",
+          "sku": "ARIE-JER-023-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/16F8W5SRdVMwuGtXtjEb5aJ6SJaLJu6uk.jpg"
+        },
+        {
+          "id": "arie-drive-23-v4",
+          "sku": "ARIE-JER-023-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/16F8W5SRdVMwuGtXtjEb5aJ6SJaLJu6uk.jpg"
+        },
+        {
+          "id": "arie-drive-23-v5",
+          "sku": "ARIE-JER-023-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/16F8W5SRdVMwuGtXtjEb5aJ6SJaLJu6uk.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-24",
+    "name": "3-Piece Owambe Celebration Jewelry Set",
+    "slug": "3-piece-owambe-celebration-jewelry-set",
+    "subtitle": "Deluxe Traditional Wedding & Party Ensemble",
+    "category": "jewelry-sets",
+    "tags": [
+      "jewelry-sets",
+      "authentic",
+      "luxury",
+      "jewelry"
+    ],
+    "price": 18000,
+    "description": "Harmoniously coordinated party ensemble perfect for Owambe ceremonies, weddings, and celebratory milestones. Packaged in a deluxe presentation box.",
+    "craftsmanship": "Coordinated ceremonial ensemble set featuring radiant simulated crystals and matching accessories.",
+    "materials": [
+      "18K Gold Electroplate",
+      "Faceted Crystals",
+      "Velvet Gift Packaging"
+    ],
+    "dimensions": "Ensemble Box Dimensions: 18 x 14 x 4 cm",
+    "inStock": true,
+    "stockCount": 19,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/129h1-4FZ1_Y10G-S6HgDgqg0ng3gLH2F.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 21,
+    "sku": "ARIE-JEW-024",
+    "specs": {
+      "Occasion": "Owambe, Wedding, Gala",
+      "Packaging": "Signature Gift Case Included"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Atelier Packaging",
+          "values": [
+            "Deluxe Velvet Gift Box Edition",
+            "Classic Atelier Travel Pouch"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-24-v1",
+          "sku": "ARIE-JEW-024-ED1",
+          "name": "Deluxe Velvet Gift Box Edition",
+          "options": {
+            "Atelier Packaging": "Deluxe Velvet Gift Box Edition"
+          },
+          "priceKobo": 1800000,
+          "stockCount": 9,
+          "image": "/images/drive-products/129h1-4FZ1_Y10G-S6HgDgqg0ng3gLH2F.jpg"
+        },
+        {
+          "id": "arie-drive-24-v2",
+          "sku": "ARIE-JEW-024-ED2",
+          "name": "Classic Atelier Travel Pouch",
+          "options": {
+            "Atelier Packaging": "Classic Atelier Travel Pouch"
+          },
+          "priceKobo": 1800000,
+          "stockCount": 9,
+          "image": "/images/drive-products/129h1-4FZ1_Y10G-S6HgDgqg0ng3gLH2F.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-25",
+    "name": "Male Luxury Dress Watch",
+    "slug": "male-luxury-dress-watch",
+    "subtitle": "Two-Tone Stainless Steel Business Analog Watch",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured",
+      "bestseller"
+    ],
+    "price": 35000,
+    "originalPrice": 40500,
+    "description": "Commanding presence with refined aesthetic accents. Seamlessly transitions between formal suiting and elevated weekend attire.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1dZwFQKyfJXIEMBxB6_tc3dtDJ76SkbBm.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 23,
+    "sku": "ARIE-WAT-025",
+    "specs": {
+      "Movement": "Precision Quartz",
+      "Clasp": "Safety Deployment Clasp",
+      "Warranty": "1 Year Guarantee"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-25-v1",
+          "sku": "ARIE-WAT-025-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 3500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1dZwFQKyfJXIEMBxB6_tc3dtDJ76SkbBm.jpg"
+        },
+        {
+          "id": "arie-drive-25-v2",
+          "sku": "ARIE-WAT-025-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 3500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1dZwFQKyfJXIEMBxB6_tc3dtDJ76SkbBm.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-26",
+    "name": "Black Face Cap (Unisex)",
+    "slug": "black-face-cap-unisex",
+    "subtitle": "Minimalist Deep Black Curved-Brim Cap",
+    "category": "caps-hats",
+    "tags": [
+      "caps-hats",
+      "authentic",
+      "luxury",
+      "accessories",
+      "new-arrival"
+    ],
+    "price": 8000,
+    "description": "Iconic styling featuring precision-embroidered motifs, pre-curved visor, and adjustable back closure for a custom comfortable fit.",
+    "craftsmanship": "Structured 6-panel design with high-density embroidery and reinforced buckram front.",
+    "materials": [
+      "100% Cotton Twill",
+      "Breathable Polyester Mesh"
+    ],
+    "dimensions": "Circumference: 56-60cm Adjustable",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1MbLqSUbzXvjYM_EwTnzRY05pjpi78m91.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 25,
+    "sku": "ARIE-CAP-026",
+    "specs": {
+      "Profile": "Structured Mid-Crown",
+      "Closure": "Adjustable Strap / Snap",
+      "Visor": "Curved Brim"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Head Fit",
+          "values": [
+            "Standard One-Size (Adjustable Strap)",
+            "Fitted Crown Edition"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-26-v1",
+          "sku": "ARIE-CAP-026-C1",
+          "name": "Standard One-Size (Adjustable Strap)",
+          "options": {
+            "Head Fit": "Standard One-Size (Adjustable Strap)"
+          },
+          "priceKobo": 800000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1MbLqSUbzXvjYM_EwTnzRY05pjpi78m91.jpg"
+        },
+        {
+          "id": "arie-drive-26-v2",
+          "sku": "ARIE-CAP-026-C2",
+          "name": "Fitted Crown Edition",
+          "options": {
+            "Head Fit": "Fitted Crown Edition"
+          },
+          "priceKobo": 800000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1MbLqSUbzXvjYM_EwTnzRY05pjpi78m91.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-27",
+    "name": "Girlie Deluxe Gift Box",
+    "slug": "girlie-deluxe-gift-box",
+    "subtitle": "Luxury Multi-Piece Gift Box with Watch & Jewelry",
+    "category": "jewelry-sets",
+    "tags": [
+      "jewelry-sets",
+      "authentic",
+      "luxury",
+      "jewelry"
+    ],
+    "price": 25000,
+    "description": "Harmoniously coordinated party ensemble perfect for Owambe ceremonies, weddings, and celebratory milestones. Packaged in a deluxe presentation box.",
+    "craftsmanship": "Coordinated ceremonial ensemble set featuring radiant simulated crystals and matching accessories.",
+    "materials": [
+      "18K Gold Electroplate",
+      "Faceted Crystals",
+      "Velvet Gift Packaging"
+    ],
+    "dimensions": "Ensemble Box Dimensions: 18 x 14 x 4 cm",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1xi8wsdvBNs5RBM0OAab7NNa7EzfUxGoJ.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 27,
+    "sku": "ARIE-JEW-027",
+    "specs": {
+      "Occasion": "Owambe, Wedding, Gala",
+      "Packaging": "Signature Gift Case Included"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Atelier Packaging",
+          "values": [
+            "Deluxe Velvet Gift Box Edition",
+            "Classic Atelier Travel Pouch"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-27-v1",
+          "sku": "ARIE-JEW-027-ED1",
+          "name": "Deluxe Velvet Gift Box Edition",
+          "options": {
+            "Atelier Packaging": "Deluxe Velvet Gift Box Edition"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1xi8wsdvBNs5RBM0OAab7NNa7EzfUxGoJ.jpg"
+        },
+        {
+          "id": "arie-drive-27-v2",
+          "sku": "ARIE-JEW-027-ED2",
+          "name": "Classic Atelier Travel Pouch",
+          "options": {
+            "Atelier Packaging": "Classic Atelier Travel Pouch"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1xi8wsdvBNs5RBM0OAab7NNa7EzfUxGoJ.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-28",
+    "name": "Couples Timepiece Set",
+    "slug": "couples-timepiece-set",
+    "subtitle": "Matching His & Hers Dual Luxury Watches",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured"
+    ],
+    "price": 22000,
+    "description": "Commanding presence with refined aesthetic accents. Seamlessly transitions between formal suiting and elevated weekend attire.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1CWoHJb6HNB64N9lVtI1DzngByn_2Xq8g.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 29,
+    "sku": "ARIE-WAT-028",
+    "specs": {
+      "Movement": "Precision Quartz",
+      "Clasp": "Safety Deployment Clasp",
+      "Warranty": "1 Year Guarantee"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-28-v1",
+          "sku": "ARIE-WAT-028-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 2200000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1CWoHJb6HNB64N9lVtI1DzngByn_2Xq8g.jpg"
+        },
+        {
+          "id": "arie-drive-28-v2",
+          "sku": "ARIE-WAT-028-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 2200000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1CWoHJb6HNB64N9lVtI1DzngByn_2Xq8g.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-29",
+    "name": "Butterfly Luxury Watch",
+    "slug": "butterfly-luxury-watch",
+    "subtitle": "Feminine Crystal-Embellished Butterfly Motif Dial Watch",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "bestseller"
+    ],
+    "price": 19000,
+    "originalPrice": 22000,
+    "description": "Commanding presence with refined aesthetic accents. Seamlessly transitions between formal suiting and elevated weekend attire.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 16,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1cCt4ntfl2sqcbzRN3yVG3zU1PHPbk_HK.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 31,
+    "sku": "ARIE-WAT-029",
+    "specs": {
+      "Movement": "Precision Quartz",
+      "Clasp": "Safety Deployment Clasp",
+      "Warranty": "1 Year Guarantee"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-29-v1",
+          "sku": "ARIE-WAT-029-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 1900000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1cCt4ntfl2sqcbzRN3yVG3zU1PHPbk_HK.jpg"
+        },
+        {
+          "id": "arie-drive-29-v2",
+          "sku": "ARIE-WAT-029-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 1900000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1cCt4ntfl2sqcbzRN3yVG3zU1PHPbk_HK.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-30",
+    "name": "Arie Signature Jewelry Set",
+    "slug": "arie-signature-jewelry-set",
+    "subtitle": "Complete Coordinating Necklace, Earrings & Bracelet Ensemble",
+    "category": "jewelry-sets",
+    "tags": [
+      "jewelry-sets",
+      "authentic",
+      "luxury",
+      "jewelry"
+    ],
+    "price": 14500,
+    "description": "Harmoniously coordinated party ensemble perfect for Owambe ceremonies, weddings, and celebratory milestones. Packaged in a deluxe presentation box.",
+    "craftsmanship": "Coordinated ceremonial ensemble set featuring radiant simulated crystals and matching accessories.",
+    "materials": [
+      "18K Gold Electroplate",
+      "Faceted Crystals",
+      "Velvet Gift Packaging"
+    ],
+    "dimensions": "Ensemble Box Dimensions: 18 x 14 x 4 cm",
+    "inStock": true,
+    "stockCount": 17,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1P2h6mreXPqwMtxXq2fSOMeg6IZCT6SUj.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 33,
+    "sku": "ARIE-JEW-030",
+    "specs": {
+      "Occasion": "Owambe, Wedding, Gala",
+      "Packaging": "Signature Gift Case Included"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Atelier Packaging",
+          "values": [
+            "Deluxe Velvet Gift Box Edition",
+            "Classic Atelier Travel Pouch"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-30-v1",
+          "sku": "ARIE-JEW-030-ED1",
+          "name": "Deluxe Velvet Gift Box Edition",
+          "options": {
+            "Atelier Packaging": "Deluxe Velvet Gift Box Edition"
+          },
+          "priceKobo": 1450000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1P2h6mreXPqwMtxXq2fSOMeg6IZCT6SUj.jpg"
+        },
+        {
+          "id": "arie-drive-30-v2",
+          "sku": "ARIE-JEW-030-ED2",
+          "name": "Classic Atelier Travel Pouch",
+          "options": {
+            "Atelier Packaging": "Classic Atelier Travel Pouch"
+          },
+          "priceKobo": 1450000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1P2h6mreXPqwMtxXq2fSOMeg6IZCT6SUj.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-31",
+    "name": "Argentina Match Jersey",
+    "slug": "argentina-match-jersey",
+    "subtitle": "Official Albiceleste Striped Match Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "featured",
+      "new-arrival"
+    ],
+    "price": 16000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 18,
+    "isNew": true,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1cnGCcAwDs9R_pQlm1amXwHDNaq0jVwKw.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 35,
+    "sku": "ARIE-JER-031",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-31-v1",
+          "sku": "ARIE-JER-031-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1cnGCcAwDs9R_pQlm1amXwHDNaq0jVwKw.jpg"
+        },
+        {
+          "id": "arie-drive-31-v2",
+          "sku": "ARIE-JER-031-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1cnGCcAwDs9R_pQlm1amXwHDNaq0jVwKw.jpg"
+        },
+        {
+          "id": "arie-drive-31-v3",
+          "sku": "ARIE-JER-031-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1cnGCcAwDs9R_pQlm1amXwHDNaq0jVwKw.jpg"
+        },
+        {
+          "id": "arie-drive-31-v4",
+          "sku": "ARIE-JER-031-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1cnGCcAwDs9R_pQlm1amXwHDNaq0jVwKw.jpg"
+        },
+        {
+          "id": "arie-drive-31-v5",
+          "sku": "ARIE-JER-031-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1cnGCcAwDs9R_pQlm1amXwHDNaq0jVwKw.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-32",
+    "name": "Smart Watch Complete Combo Set",
+    "slug": "smart-watch-complete-combo-set",
+    "subtitle": "Smartwatch with 7 Interchangeable Straps & Wireless Earbuds",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories"
+    ],
+    "price": 55000,
+    "description": "Engineered for high connectivity and modern active lifestyle. Features clear HD digital display, health monitoring, customizable watch faces, and responsive touch interface.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 19,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1pIAuWLeqRcsjgLWBWueiDOedZEaR1oBi.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 37,
+    "sku": "ARIE-WAT-032",
+    "specs": {
+      "Battery Life": "Up to 5 Days",
+      "Compatibility": "iOS & Android",
+      "Sensors": "Heart Rate, Pedometer, Sleep"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-32-v1",
+          "sku": "ARIE-WAT-032-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 5500000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1pIAuWLeqRcsjgLWBWueiDOedZEaR1oBi.jpg"
+        },
+        {
+          "id": "arie-drive-32-v2",
+          "sku": "ARIE-WAT-032-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 5500000,
+          "stockCount": 10,
+          "image": "/images/drive-products/1pIAuWLeqRcsjgLWBWueiDOedZEaR1oBi.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-33",
+    "name": "Female Genuine Leather Belt",
+    "slug": "female-genuine-leather-belt",
+    "subtitle": "Slim Waist Cinch Designer Buckle Belt",
+    "category": "belts",
+    "tags": [
+      "belts",
+      "authentic",
+      "luxury",
+      "accessories",
+      "bestseller"
+    ],
+    "price": 9500,
+    "originalPrice": 11000,
+    "description": "Crafted from supple, high-grade leather with a reversible or interchangeable heavy-duty designer buckle. Adapts effortlessly from formal trousers to denim.",
+    "craftsmanship": "Hand-stitched full-grain genuine leather with solid zinc alloy buckle mechanism.",
+    "materials": [
+      "Full-Grain Cowhide Leather",
+      "Brushed Gold / Chrome Alloy Buckle"
+    ],
+    "dimensions": "Width: 3.5cm | Length: 110-125cm Adjustable",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1yrY6Bg0LP5zH8ggiwzclD_pSVSRNQWo5.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 39,
+    "sku": "ARIE-BEL-033",
+    "specs": {
+      "Buckle": "Dual Interchangeable Head",
+      "Adjustment": "Micro-punched Holes"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Waist Size",
+          "values": [
+            "Standard Waist (28-34\")",
+            "Extended Waist (36-42\")"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-33-v1",
+          "sku": "ARIE-BEL-033-W1",
+          "name": "Standard Waist (28-34\")",
+          "options": {
+            "Waist Size": "Standard Waist (28-34\")"
+          },
+          "priceKobo": 950000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1yrY6Bg0LP5zH8ggiwzclD_pSVSRNQWo5.jpg"
+        },
+        {
+          "id": "arie-drive-33-v2",
+          "sku": "ARIE-BEL-033-W2",
+          "name": "Extended Waist (36-42\")",
+          "options": {
+            "Waist Size": "Extended Waist (36-42\")"
+          },
+          "priceKobo": 950000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1yrY6Bg0LP5zH8ggiwzclD_pSVSRNQWo5.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-34",
+    "name": "Earring and Pendant Necklace Set",
+    "slug": "earring-and-pendant-necklace-set",
+    "subtitle": "Coordinated Shimmering Cubic Zirconia Ensemble",
+    "category": "jewelry-sets",
+    "tags": [
+      "jewelry-sets",
+      "authentic",
+      "luxury",
+      "jewelry",
+      "featured"
+    ],
+    "price": 4500,
+    "description": "Intricately detailed band designed to catch the light from all angles. Can be worn solo or stacked for bold personal expression.",
+    "craftsmanship": "Coordinated ceremonial ensemble set featuring radiant simulated crystals and matching accessories.",
+    "materials": [
+      "18K Gold Electroplate",
+      "Faceted Crystals",
+      "Velvet Gift Packaging"
+    ],
+    "dimensions": "Ensemble Box Dimensions: 18 x 14 x 4 cm",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/163tUfhsGXX03A48RlWTbe7Y-ImqdpmLK.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 41,
+    "sku": "ARIE-RIN-034",
+    "specs": {
+      "Finish": "High Polish / Satin Textured",
+      "Hypoallergenic": "Lead & Nickel Free"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Atelier Packaging",
+          "values": [
+            "Deluxe Velvet Gift Box Edition",
+            "Classic Atelier Travel Pouch"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-34-v1",
+          "sku": "ARIE-RIN-034-ED1",
+          "name": "Deluxe Velvet Gift Box Edition",
+          "options": {
+            "Atelier Packaging": "Deluxe Velvet Gift Box Edition"
+          },
+          "priceKobo": 450000,
+          "stockCount": 6,
+          "image": "/images/drive-products/163tUfhsGXX03A48RlWTbe7Y-ImqdpmLK.jpg"
+        },
+        {
+          "id": "arie-drive-34-v2",
+          "sku": "ARIE-RIN-034-ED2",
+          "name": "Classic Atelier Travel Pouch",
+          "options": {
+            "Atelier Packaging": "Classic Atelier Travel Pouch"
+          },
+          "priceKobo": 450000,
+          "stockCount": 6,
+          "image": "/images/drive-products/163tUfhsGXX03A48RlWTbe7Y-ImqdpmLK.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-35",
+    "name": "Earring and Necklace Set",
+    "slug": "earring-and-necklace-set",
+    "subtitle": "Matching Crystal Stud Earrings & Delicate Pendant",
+    "category": "jewelry-sets",
+    "tags": [
+      "jewelry-sets",
+      "authentic",
+      "luxury",
+      "jewelry"
+    ],
+    "price": 4500,
+    "description": "Intricately detailed band designed to catch the light from all angles. Can be worn solo or stacked for bold personal expression.",
+    "craftsmanship": "Coordinated ceremonial ensemble set featuring radiant simulated crystals and matching accessories.",
+    "materials": [
+      "18K Gold Electroplate",
+      "Faceted Crystals",
+      "Velvet Gift Packaging"
+    ],
+    "dimensions": "Ensemble Box Dimensions: 18 x 14 x 4 cm",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1PF9SZ4phqi9JiVIa57i-iDNMkxwWvWIX.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 43,
+    "sku": "ARIE-RIN-035",
+    "specs": {
+      "Finish": "High Polish / Satin Textured",
+      "Hypoallergenic": "Lead & Nickel Free"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Atelier Packaging",
+          "values": [
+            "Deluxe Velvet Gift Box Edition",
+            "Classic Atelier Travel Pouch"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-35-v1",
+          "sku": "ARIE-RIN-035-ED1",
+          "name": "Deluxe Velvet Gift Box Edition",
+          "options": {
+            "Atelier Packaging": "Deluxe Velvet Gift Box Edition"
+          },
+          "priceKobo": 450000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1PF9SZ4phqi9JiVIa57i-iDNMkxwWvWIX.jpg"
+        },
+        {
+          "id": "arie-drive-35-v2",
+          "sku": "ARIE-RIN-035-ED2",
+          "name": "Classic Atelier Travel Pouch",
+          "options": {
+            "Atelier Packaging": "Classic Atelier Travel Pouch"
+          },
+          "priceKobo": 450000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1PF9SZ4phqi9JiVIa57i-iDNMkxwWvWIX.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-36",
+    "name": "Female Knuckle Rings Set",
+    "slug": "female-knuckle-rings-set",
+    "subtitle": "Multi-Piece Bohemian Stacking Knuckle Rings",
+    "category": "rings",
+    "tags": [
+      "rings",
+      "authentic",
+      "luxury",
+      "jewelry",
+      "new-arrival"
+    ],
+    "price": 2500,
+    "description": "Intricately detailed band designed to catch the light from all angles. Can be worn solo or stacked for bold personal expression.",
+    "craftsmanship": "High-luster electroplated gold finish with comfort-fit inner band and hand-polished facets.",
+    "materials": [
+      "Gold-Finished Stainless Steel",
+      "Cubic Zirconia"
+    ],
+    "dimensions": "Band Width: 4-8mm | Comfort Fit",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1xyEP5P3RiblFTAcraddlMlwUATeEwDzD.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 45,
+    "sku": "ARIE-RIN-036",
+    "specs": {
+      "Finish": "High Polish / Satin Textured",
+      "Hypoallergenic": "Lead & Nickel Free"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Ring Size",
+          "values": [
+            "US 8 (18.2mm)",
+            "US 9 (19.0mm)",
+            "US 10 (19.8mm)",
+            "US 11 (20.6mm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-36-v1",
+          "sku": "ARIE-RIN-036-SZ8",
+          "name": "Ring Size US 8 (18.2mm)",
+          "options": {
+            "Ring Size": "US 8 (18.2mm)"
+          },
+          "priceKobo": 250000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1xyEP5P3RiblFTAcraddlMlwUATeEwDzD.jpg"
+        },
+        {
+          "id": "arie-drive-36-v2",
+          "sku": "ARIE-RIN-036-SZ9",
+          "name": "Ring Size US 9 (19.0mm)",
+          "options": {
+            "Ring Size": "US 9 (19.0mm)"
+          },
+          "priceKobo": 250000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1xyEP5P3RiblFTAcraddlMlwUATeEwDzD.jpg"
+        },
+        {
+          "id": "arie-drive-36-v3",
+          "sku": "ARIE-RIN-036-SZ10",
+          "name": "Ring Size US 10 (19.8mm)",
+          "options": {
+            "Ring Size": "US 10 (19.8mm)"
+          },
+          "priceKobo": 250000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1xyEP5P3RiblFTAcraddlMlwUATeEwDzD.jpg"
+        },
+        {
+          "id": "arie-drive-36-v4",
+          "sku": "ARIE-RIN-036-SZ11",
+          "name": "Ring Size US 11 (20.6mm)",
+          "options": {
+            "Ring Size": "US 11 (20.6mm)"
+          },
+          "priceKobo": 250000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1xyEP5P3RiblFTAcraddlMlwUATeEwDzD.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-37",
+    "name": "Male Statement Link Bracelet",
+    "slug": "male-statement-link-bracelet",
+    "subtitle": "Bold Stainless Steel Chain Link Bangle",
+    "category": "bracelets",
+    "tags": [
+      "bracelets",
+      "authentic",
+      "luxury",
+      "jewelry",
+      "featured",
+      "bestseller"
+    ],
+    "price": 6000,
+    "originalPrice": 7000,
+    "description": "Modern wrist charm crafted with seamless balance and fluid movement. Adds an instant touch of flair to your watch pairing or solo wear.",
+    "craftsmanship": "Interlocking hand-assembled links with mirror polish and heavy-duty magnetic / folding clasp.",
+    "materials": [
+      "Electroplated Steel / Lucite Acrylic",
+      "Resin Elements"
+    ],
+    "dimensions": "Length: 19-21cm | Width: 6-12mm",
+    "inStock": true,
+    "stockCount": 16,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1W_c2FLo27fEgoZTnc87Wrl_9ZoHS_Gvw.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 47,
+    "sku": "ARIE-BRA-037",
+    "specs": {
+      "Style": "Link / Beaded / Bangle",
+      "Clasp": "Secure Locking Clasp"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Wrist Circumference",
+          "values": [
+            "Standard Fit (18-20cm)",
+            "Relaxed Fit (21-23cm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-37-v1",
+          "sku": "ARIE-BRA-037-FIT1",
+          "name": "Standard Fit (18-20cm)",
+          "options": {
+            "Wrist Circumference": "Standard Fit (18-20cm)"
+          },
+          "priceKobo": 600000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1W_c2FLo27fEgoZTnc87Wrl_9ZoHS_Gvw.jpg"
+        },
+        {
+          "id": "arie-drive-37-v2",
+          "sku": "ARIE-BRA-037-FIT2",
+          "name": "Relaxed Fit (21-23cm)",
+          "options": {
+            "Wrist Circumference": "Relaxed Fit (21-23cm)"
+          },
+          "priceKobo": 600000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1W_c2FLo27fEgoZTnc87Wrl_9ZoHS_Gvw.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-38",
+    "name": "Liverpool Match Jersey",
+    "slug": "liverpool-match-jersey",
+    "subtitle": "Anfield Reds Standard Club Match Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
+    ],
+    "price": 16000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave. Available in sizes: L, XL, XXL, XXXL.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 17,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1K4e-89ylDfunaSEH2kJDlm98OS0dGGA1.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 49,
+    "sku": "ARIE-JER-038",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "L",
+            "XL",
+            "2XL",
+            "3XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-38-v1",
+          "sku": "ARIE-JER-038-L",
+          "name": "Size L",
+          "options": {
+            "Size": "L"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1K4e-89ylDfunaSEH2kJDlm98OS0dGGA1.jpg"
+        },
+        {
+          "id": "arie-drive-38-v2",
+          "sku": "ARIE-JER-038-XL",
+          "name": "Size XL",
+          "options": {
+            "Size": "XL"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1K4e-89ylDfunaSEH2kJDlm98OS0dGGA1.jpg"
+        },
+        {
+          "id": "arie-drive-38-v3",
+          "sku": "ARIE-JER-038-2XL",
+          "name": "Size 2XL",
+          "options": {
+            "Size": "2XL"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1K4e-89ylDfunaSEH2kJDlm98OS0dGGA1.jpg"
+        },
+        {
+          "id": "arie-drive-38-v4",
+          "sku": "ARIE-JER-038-3XL",
+          "name": "Size 3XL",
+          "options": {
+            "Size": "3XL"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1K4e-89ylDfunaSEH2kJDlm98OS0dGGA1.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-39",
+    "name": "Iconic Retro Match Jersey",
+    "slug": "iconic-retro-match-jersey",
+    "subtitle": "Historic Championship Edition Match Shirt",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
+    ],
+    "price": 25000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 18,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1lnAEXQMKbzOE9lW7dRzVQQiI3_-5plqb.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 51,
+    "sku": "ARIE-JER-039",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-39-v1",
+          "sku": "ARIE-JER-039-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1lnAEXQMKbzOE9lW7dRzVQQiI3_-5plqb.jpg"
+        },
+        {
+          "id": "arie-drive-39-v2",
+          "sku": "ARIE-JER-039-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1lnAEXQMKbzOE9lW7dRzVQQiI3_-5plqb.jpg"
+        },
+        {
+          "id": "arie-drive-39-v3",
+          "sku": "ARIE-JER-039-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1lnAEXQMKbzOE9lW7dRzVQQiI3_-5plqb.jpg"
+        },
+        {
+          "id": "arie-drive-39-v4",
+          "sku": "ARIE-JER-039-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1lnAEXQMKbzOE9lW7dRzVQQiI3_-5plqb.jpg"
+        },
+        {
+          "id": "arie-drive-39-v5",
+          "sku": "ARIE-JER-039-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1lnAEXQMKbzOE9lW7dRzVQQiI3_-5plqb.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-40",
+    "name": "Sleek Minimalist Watch",
+    "slug": "sleek-minimalist-watch",
+    "subtitle": "Ultra-Thin Matte Dial Mesh Band Watch",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured"
+    ],
+    "price": 25000,
+    "description": "Commanding presence with refined aesthetic accents. Seamlessly transitions between formal suiting and elevated weekend attire.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 19,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1s_5RjtaqwqnHSHB9-fovNIRTvYQ5m5JQ.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 53,
+    "sku": "ARIE-WAT-040",
+    "specs": {
+      "Movement": "Precision Quartz",
+      "Clasp": "Safety Deployment Clasp",
+      "Warranty": "1 Year Guarantee"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-40-v1",
+          "sku": "ARIE-WAT-040-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1s_5RjtaqwqnHSHB9-fovNIRTvYQ5m5JQ.jpg"
+        },
+        {
+          "id": "arie-drive-40-v2",
+          "sku": "ARIE-WAT-040-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 10,
+          "image": "/images/drive-products/1s_5RjtaqwqnHSHB9-fovNIRTvYQ5m5JQ.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-41",
+    "name": "Executive Leather Wristwatch",
+    "slug": "executive-leather-wristwatch",
+    "subtitle": "Classic Leather Strap Calendar Quartz Watch",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "bestseller",
+      "new-arrival"
+    ],
+    "price": 25000,
+    "originalPrice": 28500,
+    "description": "Classic horological styling tailored for business meetings and evening galas. Equipped with high-precision quartz movement and hand-stitched leather strap.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1dVwgV8ekVDzGXB80cWubba32pgOj0Cju.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 15,
+    "sku": "ARIE-WAT-041",
+    "specs": {
+      "Movement": "Japanese Quartz Caliber",
+      "Strap Width": "22mm",
+      "Water Resistance": "Splash Resistant (3 ATM)"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-41-v1",
+          "sku": "ARIE-WAT-041-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1dVwgV8ekVDzGXB80cWubba32pgOj0Cju.jpg"
+        },
+        {
+          "id": "arie-drive-41-v2",
+          "sku": "ARIE-WAT-041-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1dVwgV8ekVDzGXB80cWubba32pgOj0Cju.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-42",
+    "name": "Poedagar Luxury Watch (With Box & Bag)",
+    "slug": "poedagar-luxury-watch-with-box-bag",
+    "subtitle": "Waterproof Chronograph Quartz Timepiece with Presentation Box",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories"
+    ],
+    "price": 25500,
+    "description": "Commanding presence with refined aesthetic accents. Seamlessly transitions between formal suiting and elevated weekend attire.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1PNOvXoPUTzEpdE3YdMNId-AnVjQV3UhM.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 17,
+    "sku": "ARIE-WAT-042",
+    "specs": {
+      "Movement": "Precision Quartz",
+      "Clasp": "Safety Deployment Clasp",
+      "Warranty": "1 Year Guarantee"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-42-v1",
+          "sku": "ARIE-WAT-042-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 2550000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1PNOvXoPUTzEpdE3YdMNId-AnVjQV3UhM.jpg"
+        },
+        {
+          "id": "arie-drive-42-v2",
+          "sku": "ARIE-WAT-042-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 2550000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1PNOvXoPUTzEpdE3YdMNId-AnVjQV3UhM.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-43",
+    "name": "Next-Gen Fitness Smart Watch",
+    "slug": "next-gen-fitness-smart-watch",
+    "subtitle": "Heart Rate, SpO2 & Activity Tracker Smartwatch",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured"
+    ],
+    "price": 18000,
+    "description": "Engineered for high connectivity and modern active lifestyle. Features clear HD digital display, health monitoring, customizable watch faces, and responsive touch interface.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1bu0eF49enxHjKWVpyNHHlYN1KeplVqjt.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 19,
+    "sku": "ARIE-WAT-043",
+    "specs": {
+      "Battery Life": "Up to 5 Days",
+      "Compatibility": "iOS & Android",
+      "Sensors": "Heart Rate, Pedometer, Sleep"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-43-v1",
+          "sku": "ARIE-WAT-043-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 1800000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1bu0eF49enxHjKWVpyNHHlYN1KeplVqjt.jpg"
+        },
+        {
+          "id": "arie-drive-43-v2",
+          "sku": "ARIE-WAT-043-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 1800000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1bu0eF49enxHjKWVpyNHHlYN1KeplVqjt.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-44",
+    "name": "Electroplated Gold Bracelet",
+    "slug": "electroplated-gold-bracelet",
+    "subtitle": "High-Shine Durable Electroplated Link Bangle",
+    "category": "bracelets",
+    "tags": [
+      "bracelets",
+      "authentic",
+      "luxury",
+      "jewelry"
+    ],
+    "price": 4500,
+    "description": "Modern wrist charm crafted with seamless balance and fluid movement. Adds an instant touch of flair to your watch pairing or solo wear.",
+    "craftsmanship": "Interlocking hand-assembled links with mirror polish and heavy-duty magnetic / folding clasp.",
+    "materials": [
+      "Electroplated Steel / Lucite Acrylic",
+      "Resin Elements"
+    ],
+    "dimensions": "Length: 19-21cm | Width: 6-12mm",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1w2BZ13-SWNNnFX43o63yGPWJ94fzu3-O.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 21,
+    "sku": "ARIE-BRA-044",
+    "specs": {
+      "Style": "Link / Beaded / Bangle",
+      "Clasp": "Secure Locking Clasp"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Wrist Circumference",
+          "values": [
+            "Standard Fit (18-20cm)",
+            "Relaxed Fit (21-23cm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-44-v1",
+          "sku": "ARIE-BRA-044-FIT1",
+          "name": "Standard Fit (18-20cm)",
+          "options": {
+            "Wrist Circumference": "Standard Fit (18-20cm)"
+          },
+          "priceKobo": 450000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1w2BZ13-SWNNnFX43o63yGPWJ94fzu3-O.jpg"
+        },
+        {
+          "id": "arie-drive-44-v2",
+          "sku": "ARIE-BRA-044-FIT2",
+          "name": "Relaxed Fit (21-23cm)",
+          "options": {
+            "Wrist Circumference": "Relaxed Fit (21-23cm)"
+          },
+          "priceKobo": 450000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1w2BZ13-SWNNnFX43o63yGPWJ94fzu3-O.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-45",
+    "name": "Dynamic Activity Smart Watch",
+    "slug": "dynamic-activity-smart-watch",
+    "subtitle": "Multi-Sport Smart Timepiece with Long Battery Life",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories",
+      "bestseller"
+    ],
+    "price": 30000,
+    "originalPrice": 34500,
+    "description": "Engineered for high connectivity and modern active lifestyle. Features clear HD digital display, health monitoring, customizable watch faces, and responsive touch interface.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 16,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/172lrCHIbTPazoMu3ZAL5iIn3ngvouRQc.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 23,
+    "sku": "ARIE-WAT-045",
+    "specs": {
+      "Battery Life": "Up to 5 Days",
+      "Compatibility": "iOS & Android",
+      "Sensors": "Heart Rate, Pedometer, Sleep"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-45-v1",
+          "sku": "ARIE-WAT-045-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 3000000,
+          "stockCount": 8,
+          "image": "/images/drive-products/172lrCHIbTPazoMu3ZAL5iIn3ngvouRQc.jpg"
+        },
+        {
+          "id": "arie-drive-45-v2",
+          "sku": "ARIE-WAT-045-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 3000000,
+          "stockCount": 8,
+          "image": "/images/drive-products/172lrCHIbTPazoMu3ZAL5iIn3ngvouRQc.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-46",
+    "name": "Unisex Designer Tinted Glasses",
+    "slug": "unisex-designer-tinted-glasses",
+    "subtitle": "UV400 Protected Fashion Shades for Men & Women",
+    "category": "eyewear",
+    "tags": [
+      "eyewear",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured",
+      "new-arrival"
+    ],
+    "price": 12500,
+    "description": "Distinctive silhouette featuring impact-resistant tinted lenses with full UV400 solar shielding and ergonomic nose bridge pads.",
+    "craftsmanship": "Precision CNC-cut acetate with spring hinges and UV400 anti-reflective protective coating.",
+    "materials": [
+      "Handcrafted Acetate",
+      "CR-39 UV400 Polycarbonate Lenses"
+    ],
+    "dimensions": "Lens: 52mm | Bridge: 18mm | Temple: 142mm",
+    "inStock": true,
+    "stockCount": 17,
+    "isNew": true,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1uKInPdw2EDRNnwpowj_el2Z8rSSL-zR_.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 25,
+    "sku": "ARIE-EYE-046",
+    "specs": {
+      "UV Protection": "100% UV400 Shield",
+      "Case": "Protective Hard Case & Cleaning Cloth"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Frame & Lens Finish",
+          "values": [
+            "Classic Black Frame / UV Tint",
+            "Gold Accent Frame / Clear Blue-Cut"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-46-v1",
+          "sku": "ARIE-EYE-046-FR1",
+          "name": "Classic Black Frame / UV Tint",
+          "options": {
+            "Frame & Lens Finish": "Classic Black Frame / UV Tint"
+          },
+          "priceKobo": 1250000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1uKInPdw2EDRNnwpowj_el2Z8rSSL-zR_.jpg"
+        },
+        {
+          "id": "arie-drive-46-v2",
+          "sku": "ARIE-EYE-046-FR2",
+          "name": "Gold Accent Frame / Clear Blue-Cut",
+          "options": {
+            "Frame & Lens Finish": "Gold Accent Frame / Clear Blue-Cut"
+          },
+          "priceKobo": 1250000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1uKInPdw2EDRNnwpowj_el2Z8rSSL-zR_.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-47",
+    "name": "Quality Female Leather Belt",
+    "slug": "quality-female-leather-belt",
+    "subtitle": "Polished Gold Oval Buckle Genuine Leather Belt",
+    "category": "belts",
+    "tags": [
+      "belts",
+      "authentic",
+      "luxury",
+      "accessories"
+    ],
+    "price": 9500,
+    "description": "Crafted from supple, high-grade leather with a reversible or interchangeable heavy-duty designer buckle. Adapts effortlessly from formal trousers to denim.",
+    "craftsmanship": "Hand-stitched full-grain genuine leather with solid zinc alloy buckle mechanism.",
+    "materials": [
+      "Full-Grain Cowhide Leather",
+      "Brushed Gold / Chrome Alloy Buckle"
+    ],
+    "dimensions": "Width: 3.5cm | Length: 110-125cm Adjustable",
+    "inStock": true,
+    "stockCount": 18,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1Sg9w2E0UHklHucRMXqFAkeQzCEn4Z_MC.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 27,
+    "sku": "ARIE-BEL-047",
+    "specs": {
+      "Buckle": "Dual Interchangeable Head",
+      "Adjustment": "Micro-punched Holes"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Waist Size",
+          "values": [
+            "Standard Waist (28-34\")",
+            "Extended Waist (36-42\")"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-47-v1",
+          "sku": "ARIE-BEL-047-W1",
+          "name": "Standard Waist (28-34\")",
+          "options": {
+            "Waist Size": "Standard Waist (28-34\")"
+          },
+          "priceKobo": 950000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1Sg9w2E0UHklHucRMXqFAkeQzCEn4Z_MC.jpg"
+        },
+        {
+          "id": "arie-drive-47-v2",
+          "sku": "ARIE-BEL-047-W2",
+          "name": "Extended Waist (36-42\")",
+          "options": {
+            "Waist Size": "Extended Waist (36-42\")"
+          },
+          "priceKobo": 950000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1Sg9w2E0UHklHucRMXqFAkeQzCEn4Z_MC.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-48",
+    "name": "Ultra-Slim Stainless Smart Watch",
+    "slug": "ultra-slim-stainless-smart-watch",
+    "subtitle": "Premium Metal Case HD Touchscreen Smartwatch",
+    "category": "watches",
+    "tags": [
+      "watches",
+      "authentic",
+      "luxury",
+      "accessories"
+    ],
+    "price": 45000,
+    "description": "Engineered for high connectivity and modern active lifestyle. Features clear HD digital display, health monitoring, customizable watch faces, and responsive touch interface.",
+    "craftsmanship": "Vacuum ion-plated steel with scratch-resistant mineral crystal glass and precision quartz/smart movement.",
+    "materials": [
+      "316L Stainless Steel",
+      "Mineral Hardlex Crystal",
+      "Genuine Leather / Milanese Mesh"
+    ],
+    "dimensions": "Case Diameter: 40-42mm | Band Width: 20-22mm",
+    "inStock": true,
+    "stockCount": 19,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1CxZSw42repx2YilkpYvdkVIN-9-KZcZA.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 29,
+    "sku": "ARIE-WAT-048",
+    "specs": {
+      "Battery Life": "Up to 5 Days",
+      "Compatibility": "iOS & Android",
+      "Sensors": "Heart Rate, Pedometer, Sleep"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Dial & Strap Accent",
+          "values": [
+            "Obsidian Black / Standard Fit",
+            "Champagne Gold / Extended Fit"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-48-v1",
+          "sku": "ARIE-WAT-048-BLK",
+          "name": "Obsidian Black / Standard Fit",
+          "options": {
+            "Dial & Strap Accent": "Obsidian Black / Standard Fit"
+          },
+          "priceKobo": 4500000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1CxZSw42repx2YilkpYvdkVIN-9-KZcZA.jpg"
+        },
+        {
+          "id": "arie-drive-48-v2",
+          "sku": "ARIE-WAT-048-GLD",
+          "name": "Champagne Gold / Extended Fit",
+          "options": {
+            "Dial & Strap Accent": "Champagne Gold / Extended Fit"
+          },
+          "priceKobo": 4500000,
+          "stockCount": 10,
+          "image": "/images/drive-products/1CxZSw42repx2YilkpYvdkVIN-9-KZcZA.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-49",
+    "name": "Designer Fashion Hat",
+    "slug": "designer-fashion-hat",
+    "subtitle": "Runway-Inspired Structured Fedora & Sun Hat",
+    "category": "caps-hats",
+    "tags": [
+      "caps-hats",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured",
+      "bestseller"
+    ],
+    "price": 25000,
+    "originalPrice": 28500,
+    "description": "Iconic styling featuring precision-embroidered motifs, pre-curved visor, and adjustable back closure for a custom comfortable fit.",
+    "craftsmanship": "Structured 6-panel design with high-density embroidery and reinforced buckram front.",
+    "materials": [
+      "100% Cotton Twill",
+      "Breathable Polyester Mesh"
+    ],
+    "dimensions": "Circumference: 56-60cm Adjustable",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1VU4ihx5cLP9f3Dx2xvqmp4i1Xy10nSVv.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 31,
+    "sku": "ARIE-CAP-049",
+    "specs": {
+      "Profile": "Structured Mid-Crown",
+      "Closure": "Adjustable Strap / Snap",
+      "Visor": "Curved Brim"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Head Fit",
+          "values": [
+            "Standard One-Size (Adjustable Strap)",
+            "Fitted Crown Edition"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-49-v1",
+          "sku": "ARIE-CAP-049-C1",
+          "name": "Standard One-Size (Adjustable Strap)",
+          "options": {
+            "Head Fit": "Standard One-Size (Adjustable Strap)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1VU4ihx5cLP9f3Dx2xvqmp4i1Xy10nSVv.jpg"
+        },
+        {
+          "id": "arie-drive-49-v2",
+          "sku": "ARIE-CAP-049-C2",
+          "name": "Fitted Crown Edition",
+          "options": {
+            "Head Fit": "Fitted Crown Edition"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1VU4ihx5cLP9f3Dx2xvqmp4i1Xy10nSVv.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-50",
+    "name": "Branded Face Cap",
+    "slug": "branded-face-cap",
+    "subtitle": "Premium Structured Designer Embroidered Cap",
+    "category": "caps-hats",
+    "tags": [
+      "caps-hats",
+      "authentic",
+      "luxury",
+      "accessories"
+    ],
+    "price": 25000,
+    "description": "Iconic styling featuring precision-embroidered motifs, pre-curved visor, and adjustable back closure for a custom comfortable fit.",
+    "craftsmanship": "Structured 6-panel design with high-density embroidery and reinforced buckram front.",
+    "materials": [
+      "100% Cotton Twill",
+      "Breathable Polyester Mesh"
+    ],
+    "dimensions": "Circumference: 56-60cm Adjustable",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1IhLVOACqtAE2t3ZhMLFVz58R7IgMh6L1.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 33,
+    "sku": "ARIE-CAP-050",
+    "specs": {
+      "Profile": "Structured Mid-Crown",
+      "Closure": "Adjustable Strap / Snap",
+      "Visor": "Curved Brim"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Head Fit",
+          "values": [
+            "Standard One-Size (Adjustable Strap)",
+            "Fitted Crown Edition"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-50-v1",
+          "sku": "ARIE-CAP-050-C1",
+          "name": "Standard One-Size (Adjustable Strap)",
+          "options": {
+            "Head Fit": "Standard One-Size (Adjustable Strap)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1IhLVOACqtAE2t3ZhMLFVz58R7IgMh6L1.jpg"
+        },
+        {
+          "id": "arie-drive-50-v2",
+          "sku": "ARIE-CAP-050-C2",
+          "name": "Fitted Crown Edition",
+          "options": {
+            "Head Fit": "Fitted Crown Edition"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1IhLVOACqtAE2t3ZhMLFVz58R7IgMh6L1.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-51",
+    "name": "Luxury Wide-Brim Fashion Hat",
+    "slug": "luxury-wide-brim-fashion-hat",
+    "subtitle": "Elegant Couture Wide-Brimmed Silhouette Hat",
+    "category": "caps-hats",
+    "tags": [
+      "caps-hats",
+      "authentic",
+      "luxury",
+      "accessories",
+      "new-arrival"
+    ],
+    "price": 25000,
+    "description": "Iconic styling featuring precision-embroidered motifs, pre-curved visor, and adjustable back closure for a custom comfortable fit.",
+    "craftsmanship": "Structured 6-panel design with high-density embroidery and reinforced buckram front.",
+    "materials": [
+      "100% Cotton Twill",
+      "Breathable Polyester Mesh"
+    ],
+    "dimensions": "Circumference: 56-60cm Adjustable",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/110UQ0QVVRV2I_2WrBTqNeDxVJL4JdE9d.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 35,
+    "sku": "ARIE-CAP-051",
+    "specs": {
+      "Profile": "Structured Mid-Crown",
+      "Closure": "Adjustable Strap / Snap",
+      "Visor": "Curved Brim"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Head Fit",
+          "values": [
+            "Standard One-Size (Adjustable Strap)",
+            "Fitted Crown Edition"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-51-v1",
+          "sku": "ARIE-CAP-051-C1",
+          "name": "Standard One-Size (Adjustable Strap)",
+          "options": {
+            "Head Fit": "Standard One-Size (Adjustable Strap)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 7,
+          "image": "/images/drive-products/110UQ0QVVRV2I_2WrBTqNeDxVJL4JdE9d.jpg"
+        },
+        {
+          "id": "arie-drive-51-v2",
+          "sku": "ARIE-CAP-051-C2",
+          "name": "Fitted Crown Edition",
+          "options": {
+            "Head Fit": "Fitted Crown Edition"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 7,
+          "image": "/images/drive-products/110UQ0QVVRV2I_2WrBTqNeDxVJL4JdE9d.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-52",
+    "name": "Graphic Trucker Cap",
+    "slug": "graphic-trucker-cap",
+    "subtitle": "Embroidered Graphic Mesh-Back Trucker Hat",
+    "category": "caps-hats",
+    "tags": [
+      "caps-hats",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured"
+    ],
+    "price": 6500,
+    "description": "Iconic styling featuring precision-embroidered motifs, pre-curved visor, and adjustable back closure for a custom comfortable fit.",
+    "craftsmanship": "Structured 6-panel design with high-density embroidery and reinforced buckram front.",
+    "materials": [
+      "100% Cotton Twill",
+      "Breathable Polyester Mesh"
+    ],
+    "dimensions": "Circumference: 56-60cm Adjustable",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1zoxg3aIMgvwg5m5WGD4KzIDSVkgaZZVC.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 37,
+    "sku": "ARIE-CAP-052",
+    "specs": {
+      "Profile": "Structured Mid-Crown",
+      "Closure": "Adjustable Strap / Snap",
+      "Visor": "Curved Brim"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Head Fit",
+          "values": [
+            "Standard One-Size (Adjustable Strap)",
+            "Fitted Crown Edition"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-52-v1",
+          "sku": "ARIE-CAP-052-C1",
+          "name": "Standard One-Size (Adjustable Strap)",
+          "options": {
+            "Head Fit": "Standard One-Size (Adjustable Strap)"
+          },
+          "priceKobo": 650000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1zoxg3aIMgvwg5m5WGD4KzIDSVkgaZZVC.jpg"
+        },
+        {
+          "id": "arie-drive-52-v2",
+          "sku": "ARIE-CAP-052-C2",
+          "name": "Fitted Crown Edition",
+          "options": {
+            "Head Fit": "Fitted Crown Edition"
+          },
+          "priceKobo": 650000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1zoxg3aIMgvwg5m5WGD4KzIDSVkgaZZVC.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-53",
+    "name": "Unisex Basketball Jersey",
+    "slug": "unisex-basketball-jersey",
+    "subtitle": "Breathable Court Mesh Performance Basketball Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "bestseller"
+    ],
+    "price": 14000,
+    "originalPrice": 16000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 16,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1EfjnnIUSZk-rqQCOnFdH7w-PBcxi4rxV.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 39,
+    "sku": "ARIE-JER-053",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-53-v1",
+          "sku": "ARIE-JER-053-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1EfjnnIUSZk-rqQCOnFdH7w-PBcxi4rxV.jpg"
+        },
+        {
+          "id": "arie-drive-53-v2",
+          "sku": "ARIE-JER-053-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1EfjnnIUSZk-rqQCOnFdH7w-PBcxi4rxV.jpg"
+        },
+        {
+          "id": "arie-drive-53-v3",
+          "sku": "ARIE-JER-053-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1EfjnnIUSZk-rqQCOnFdH7w-PBcxi4rxV.jpg"
+        },
+        {
+          "id": "arie-drive-53-v4",
+          "sku": "ARIE-JER-053-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1EfjnnIUSZk-rqQCOnFdH7w-PBcxi4rxV.jpg"
+        },
+        {
+          "id": "arie-drive-53-v5",
+          "sku": "ARIE-JER-053-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1EfjnnIUSZk-rqQCOnFdH7w-PBcxi4rxV.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-54",
+    "name": "Earring and Necklace Duo",
+    "slug": "earring-and-necklace-duo",
+    "subtitle": "Gold-Tone Layered Chain & Matching Drop Earrings",
+    "category": "jewelry-sets",
+    "tags": [
+      "jewelry-sets",
+      "authentic",
+      "luxury",
+      "jewelry"
+    ],
+    "price": 4500,
+    "description": "Intricately detailed band designed to catch the light from all angles. Can be worn solo or stacked for bold personal expression.",
+    "craftsmanship": "Coordinated ceremonial ensemble set featuring radiant simulated crystals and matching accessories.",
+    "materials": [
+      "18K Gold Electroplate",
+      "Faceted Crystals",
+      "Velvet Gift Packaging"
+    ],
+    "dimensions": "Ensemble Box Dimensions: 18 x 14 x 4 cm",
+    "inStock": true,
+    "stockCount": 17,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/19F3dwTy2V9E0WdezpoQYyuuCOcEqUiSi.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 41,
+    "sku": "ARIE-RIN-054",
+    "specs": {
+      "Finish": "High Polish / Satin Textured",
+      "Hypoallergenic": "Lead & Nickel Free"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Atelier Packaging",
+          "values": [
+            "Deluxe Velvet Gift Box Edition",
+            "Classic Atelier Travel Pouch"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-54-v1",
+          "sku": "ARIE-RIN-054-ED1",
+          "name": "Deluxe Velvet Gift Box Edition",
+          "options": {
+            "Atelier Packaging": "Deluxe Velvet Gift Box Edition"
+          },
+          "priceKobo": 450000,
+          "stockCount": 8,
+          "image": "/images/drive-products/19F3dwTy2V9E0WdezpoQYyuuCOcEqUiSi.jpg"
+        },
+        {
+          "id": "arie-drive-54-v2",
+          "sku": "ARIE-RIN-054-ED2",
+          "name": "Classic Atelier Travel Pouch",
+          "options": {
+            "Atelier Packaging": "Classic Atelier Travel Pouch"
+          },
+          "priceKobo": 450000,
+          "stockCount": 8,
+          "image": "/images/drive-products/19F3dwTy2V9E0WdezpoQYyuuCOcEqUiSi.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-55",
+    "name": "Male Knuckle Rings Set",
+    "slug": "male-knuckle-rings-set",
+    "subtitle": "Masculine Geometric Textured Band Rings",
+    "category": "rings",
+    "tags": [
+      "rings",
+      "authentic",
+      "luxury",
+      "jewelry",
+      "featured"
+    ],
+    "price": 2000,
+    "description": "Intricately detailed band designed to catch the light from all angles. Can be worn solo or stacked for bold personal expression.",
+    "craftsmanship": "High-luster electroplated gold finish with comfort-fit inner band and hand-polished facets.",
+    "materials": [
+      "Gold-Finished Stainless Steel",
+      "Cubic Zirconia"
+    ],
+    "dimensions": "Band Width: 4-8mm | Comfort Fit",
+    "inStock": true,
+    "stockCount": 18,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1BcFYCsuZT8k1aHo-G9fY72j7QsqvALg4.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 43,
+    "sku": "ARIE-RIN-055",
+    "specs": {
+      "Finish": "High Polish / Satin Textured",
+      "Hypoallergenic": "Lead & Nickel Free"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Ring Size",
+          "values": [
+            "US 8 (18.2mm)",
+            "US 9 (19.0mm)",
+            "US 10 (19.8mm)",
+            "US 11 (20.6mm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-55-v1",
+          "sku": "ARIE-RIN-055-SZ8",
+          "name": "Ring Size US 8 (18.2mm)",
+          "options": {
+            "Ring Size": "US 8 (18.2mm)"
+          },
+          "priceKobo": 200000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1BcFYCsuZT8k1aHo-G9fY72j7QsqvALg4.jpg"
+        },
+        {
+          "id": "arie-drive-55-v2",
+          "sku": "ARIE-RIN-055-SZ9",
+          "name": "Ring Size US 9 (19.0mm)",
+          "options": {
+            "Ring Size": "US 9 (19.0mm)"
+          },
+          "priceKobo": 200000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1BcFYCsuZT8k1aHo-G9fY72j7QsqvALg4.jpg"
+        },
+        {
+          "id": "arie-drive-55-v3",
+          "sku": "ARIE-RIN-055-SZ10",
+          "name": "Ring Size US 10 (19.8mm)",
+          "options": {
+            "Ring Size": "US 10 (19.8mm)"
+          },
+          "priceKobo": 200000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1BcFYCsuZT8k1aHo-G9fY72j7QsqvALg4.jpg"
+        },
+        {
+          "id": "arie-drive-55-v4",
+          "sku": "ARIE-RIN-055-SZ11",
+          "name": "Ring Size US 11 (20.6mm)",
+          "options": {
+            "Ring Size": "US 11 (20.6mm)"
+          },
+          "priceKobo": 200000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1BcFYCsuZT8k1aHo-G9fY72j7QsqvALg4.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-56",
+    "name": "Gold Pendant Chain Necklace",
+    "slug": "gold-pendant-chain-necklace",
+    "subtitle": "Minimalist Daily Wear Choker & Pendant",
+    "category": "necklaces",
+    "tags": [
+      "necklaces",
+      "authentic",
+      "luxury",
+      "jewelry",
+      "new-arrival"
+    ],
+    "price": 5000,
+    "description": "Sleek and versatile necklace that catches the golden hour light beautifully. Designed to be worn daily without fading or tarnish.",
+    "craftsmanship": "Micro-plated 18K yellow gold tone on surgical steel with secure lobster clasp.",
+    "materials": [
+      "PVD 18K Gold Finish",
+      "Hypoallergenic 316L Steel"
+    ],
+    "dimensions": "Chain Length: 18-24 inches | Pendant: 20-35mm",
+    "inStock": true,
+    "stockCount": 19,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1jS6I3PtmhxWqTHlUdGA2B6QIL1UUp8ke.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 45,
+    "sku": "ARIE-NEC-056",
+    "specs": {
+      "Chain Style": "Twist Curb / Box Link",
+      "Pouch": "Velvet Protective Pouch"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Chain Length",
+          "values": [
+            "18 inch (45cm)",
+            "20 inch (50cm)",
+            "24 inch (60cm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-56-v1",
+          "sku": "ARIE-NEC-056-18IN",
+          "name": "18 inch (45cm)",
+          "options": {
+            "Chain Length": "18 inch (45cm)"
+          },
+          "priceKobo": 500000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1jS6I3PtmhxWqTHlUdGA2B6QIL1UUp8ke.jpg"
+        },
+        {
+          "id": "arie-drive-56-v2",
+          "sku": "ARIE-NEC-056-20IN",
+          "name": "20 inch (50cm)",
+          "options": {
+            "Chain Length": "20 inch (50cm)"
+          },
+          "priceKobo": 500000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1jS6I3PtmhxWqTHlUdGA2B6QIL1UUp8ke.jpg"
+        },
+        {
+          "id": "arie-drive-56-v3",
+          "sku": "ARIE-NEC-056-24IN",
+          "name": "24 inch (60cm)",
+          "options": {
+            "Chain Length": "24 inch (60cm)"
+          },
+          "priceKobo": 500000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1jS6I3PtmhxWqTHlUdGA2B6QIL1UUp8ke.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-57",
+    "name": "Delicate Layering Chain Necklace",
+    "slug": "delicate-layering-chain-necklace",
+    "subtitle": "Multi-Strand Fine Luster Layering Chain",
+    "category": "necklaces",
+    "tags": [
+      "necklaces",
+      "authentic",
+      "luxury",
+      "jewelry",
+      "bestseller"
+    ],
+    "price": 5000,
+    "originalPrice": 6000,
+    "description": "Sleek and versatile necklace that catches the golden hour light beautifully. Designed to be worn daily without fading or tarnish.",
+    "craftsmanship": "Micro-plated 18K yellow gold tone on surgical steel with secure lobster clasp.",
+    "materials": [
+      "PVD 18K Gold Finish",
+      "Hypoallergenic 316L Steel"
+    ],
+    "dimensions": "Chain Length: 18-24 inches | Pendant: 20-35mm",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1wFw0qrRg_rAOlvjZuCGchGa5OJu2PQho.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 47,
+    "sku": "ARIE-NEC-057",
+    "specs": {
+      "Chain Style": "Twist Curb / Box Link",
+      "Pouch": "Velvet Protective Pouch"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Chain Length",
+          "values": [
+            "18 inch (45cm)",
+            "20 inch (50cm)",
+            "24 inch (60cm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-57-v1",
+          "sku": "ARIE-NEC-057-18IN",
+          "name": "18 inch (45cm)",
+          "options": {
+            "Chain Length": "18 inch (45cm)"
+          },
+          "priceKobo": 500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1wFw0qrRg_rAOlvjZuCGchGa5OJu2PQho.jpg"
+        },
+        {
+          "id": "arie-drive-57-v2",
+          "sku": "ARIE-NEC-057-20IN",
+          "name": "20 inch (50cm)",
+          "options": {
+            "Chain Length": "20 inch (50cm)"
+          },
+          "priceKobo": 500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1wFw0qrRg_rAOlvjZuCGchGa5OJu2PQho.jpg"
+        },
+        {
+          "id": "arie-drive-57-v3",
+          "sku": "ARIE-NEC-057-24IN",
+          "name": "24 inch (60cm)",
+          "options": {
+            "Chain Length": "24 inch (60cm)"
+          },
+          "priceKobo": 500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1wFw0qrRg_rAOlvjZuCGchGa5OJu2PQho.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-58",
+    "name": "Electroplated Gold Necklace",
+    "slug": "electroplated-gold-necklace",
+    "subtitle": "Vacuum-Plated Non-Tarnish Gold Link Chain",
+    "category": "necklaces",
+    "tags": [
+      "necklaces",
+      "authentic",
+      "luxury",
+      "jewelry",
+      "featured"
+    ],
+    "price": 5000,
+    "description": "Sleek and versatile necklace that catches the golden hour light beautifully. Designed to be worn daily without fading or tarnish.",
+    "craftsmanship": "Micro-plated 18K yellow gold tone on surgical steel with secure lobster clasp.",
+    "materials": [
+      "PVD 18K Gold Finish",
+      "Hypoallergenic 316L Steel"
+    ],
+    "dimensions": "Chain Length: 18-24 inches | Pendant: 20-35mm",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1IxLX53sLDqywlr5tW7ecK9THo9siwlnb.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 49,
+    "sku": "ARIE-NEC-058",
+    "specs": {
+      "Chain Style": "Twist Curb / Box Link",
+      "Pouch": "Velvet Protective Pouch"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Chain Length",
+          "values": [
+            "18 inch (45cm)",
+            "20 inch (50cm)",
+            "24 inch (60cm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-58-v1",
+          "sku": "ARIE-NEC-058-18IN",
+          "name": "18 inch (45cm)",
+          "options": {
+            "Chain Length": "18 inch (45cm)"
+          },
+          "priceKobo": 500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1IxLX53sLDqywlr5tW7ecK9THo9siwlnb.jpg"
+        },
+        {
+          "id": "arie-drive-58-v2",
+          "sku": "ARIE-NEC-058-20IN",
+          "name": "20 inch (50cm)",
+          "options": {
+            "Chain Length": "20 inch (50cm)"
+          },
+          "priceKobo": 500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1IxLX53sLDqywlr5tW7ecK9THo9siwlnb.jpg"
+        },
+        {
+          "id": "arie-drive-58-v3",
+          "sku": "ARIE-NEC-058-24IN",
+          "name": "24 inch (60cm)",
+          "options": {
+            "Chain Length": "24 inch (60cm)"
+          },
+          "priceKobo": 500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1IxLX53sLDqywlr5tW7ecK9THo9siwlnb.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-59",
+    "name": "Knuckle Rings Stacking Set",
+    "slug": "knuckle-rings-stacking-set",
+    "subtitle": "Sculptural Midi & Knuckle Fashion Bands",
+    "category": "rings",
+    "tags": [
+      "rings",
+      "authentic",
+      "luxury",
+      "jewelry"
+    ],
+    "price": 2500,
+    "description": "Intricately detailed band designed to catch the light from all angles. Can be worn solo or stacked for bold personal expression.",
+    "craftsmanship": "High-luster electroplated gold finish with comfort-fit inner band and hand-polished facets.",
+    "materials": [
+      "Gold-Finished Stainless Steel",
+      "Cubic Zirconia"
+    ],
+    "dimensions": "Band Width: 4-8mm | Comfort Fit",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1CU5ARABwjFNiRhVXGEijl-wL6f4q5PAV.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 51,
+    "sku": "ARIE-RIN-059",
+    "specs": {
+      "Finish": "High Polish / Satin Textured",
+      "Hypoallergenic": "Lead & Nickel Free"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Ring Size",
+          "values": [
+            "US 8 (18.2mm)",
+            "US 9 (19.0mm)",
+            "US 10 (19.8mm)",
+            "US 11 (20.6mm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-59-v1",
+          "sku": "ARIE-RIN-059-SZ8",
+          "name": "Ring Size US 8 (18.2mm)",
+          "options": {
+            "Ring Size": "US 8 (18.2mm)"
+          },
+          "priceKobo": 250000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1CU5ARABwjFNiRhVXGEijl-wL6f4q5PAV.jpg"
+        },
+        {
+          "id": "arie-drive-59-v2",
+          "sku": "ARIE-RIN-059-SZ9",
+          "name": "Ring Size US 9 (19.0mm)",
+          "options": {
+            "Ring Size": "US 9 (19.0mm)"
+          },
+          "priceKobo": 250000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1CU5ARABwjFNiRhVXGEijl-wL6f4q5PAV.jpg"
+        },
+        {
+          "id": "arie-drive-59-v3",
+          "sku": "ARIE-RIN-059-SZ10",
+          "name": "Ring Size US 10 (19.8mm)",
+          "options": {
+            "Ring Size": "US 10 (19.8mm)"
+          },
+          "priceKobo": 250000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1CU5ARABwjFNiRhVXGEijl-wL6f4q5PAV.jpg"
+        },
+        {
+          "id": "arie-drive-59-v4",
+          "sku": "ARIE-RIN-059-SZ11",
+          "name": "Ring Size US 11 (20.6mm)",
+          "options": {
+            "Ring Size": "US 11 (20.6mm)"
+          },
+          "priceKobo": 250000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1CU5ARABwjFNiRhVXGEijl-wL6f4q5PAV.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-60",
+    "name": "Acrylic Bead Bracelet",
+    "slug": "acrylic-bead-bracelet",
+    "subtitle": "Artisanal Colorful Acrylic Wrist Accessory",
+    "category": "bracelets",
+    "tags": [
+      "bracelets",
+      "authentic",
+      "luxury",
+      "jewelry"
+    ],
+    "price": 3000,
+    "description": "Modern wrist charm crafted with seamless balance and fluid movement. Adds an instant touch of flair to your watch pairing or solo wear.",
+    "craftsmanship": "Interlocking hand-assembled links with mirror polish and heavy-duty magnetic / folding clasp.",
+    "materials": [
+      "Electroplated Steel / Lucite Acrylic",
+      "Resin Elements"
+    ],
+    "dimensions": "Length: 19-21cm | Width: 6-12mm",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1HG3Wp3hZfwCrAdvnIs_v6pOPlCMaalqa.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 53,
+    "sku": "ARIE-BRA-060",
+    "specs": {
+      "Style": "Link / Beaded / Bangle",
+      "Clasp": "Secure Locking Clasp"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Wrist Circumference",
+          "values": [
+            "Standard Fit (18-20cm)",
+            "Relaxed Fit (21-23cm)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-60-v1",
+          "sku": "ARIE-BRA-060-FIT1",
+          "name": "Standard Fit (18-20cm)",
+          "options": {
+            "Wrist Circumference": "Standard Fit (18-20cm)"
+          },
+          "priceKobo": 300000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1HG3Wp3hZfwCrAdvnIs_v6pOPlCMaalqa.jpg"
+        },
+        {
+          "id": "arie-drive-60-v2",
+          "sku": "ARIE-BRA-060-FIT2",
+          "name": "Relaxed Fit (21-23cm)",
+          "options": {
+            "Wrist Circumference": "Relaxed Fit (21-23cm)"
+          },
+          "priceKobo": 300000,
+          "stockCount": 7,
+          "image": "/images/drive-products/1HG3Wp3hZfwCrAdvnIs_v6pOPlCMaalqa.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-61",
+    "name": "Pique Cotton Polo T-Shirt",
+    "slug": "pique-cotton-polo-t-shirt",
+    "subtitle": "Breathable Combed Cotton Collared Shirt",
+    "category": "polo-shirts",
+    "tags": [
+      "polo-shirts",
+      "authentic",
+      "luxury",
+      "featured",
+      "bestseller",
+      "new-arrival"
+    ],
+    "price": 7000,
+    "originalPrice": 8000,
+    "description": "Premium high-density cotton weave with tailored collar and ribbed sleeve cuffs. Perfect for casual business, travel, and social outings.",
+    "craftsmanship": "Double-mercerized combed cotton piqué with reinforced collar ribs and mother-of-pearl buttons.",
+    "materials": [
+      "100% Ring-Spun Combed Cotton",
+      "Lustrous Piqué Knit"
+    ],
+    "dimensions": "Regular & Extended Comfort Fit",
+    "inStock": true,
+    "stockCount": 16,
+    "isNew": true,
+    "isFeatured": true,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1kRS75tFX6dGELTz03eBfmsmHoDLCRtLQ.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 15,
+    "sku": "ARIE-POL-061",
+    "specs": {
+      "Collar": "Ribbed Knit Polo Collar",
+      "Weave": "Heavyweight Piqué",
+      "Fit": "Regular Tailored Fit"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "M",
+            "XL",
+            "2XL",
+            "3XL",
+            "4XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-61-v1",
+          "sku": "ARIE-POL-061-M",
+          "name": "Size M",
+          "options": {
+            "Size": "M"
+          },
+          "priceKobo": 700000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1kRS75tFX6dGELTz03eBfmsmHoDLCRtLQ.jpg"
+        },
+        {
+          "id": "arie-drive-61-v2",
+          "sku": "ARIE-POL-061-XL",
+          "name": "Size XL",
+          "options": {
+            "Size": "XL"
+          },
+          "priceKobo": 700000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1kRS75tFX6dGELTz03eBfmsmHoDLCRtLQ.jpg"
+        },
+        {
+          "id": "arie-drive-61-v3",
+          "sku": "ARIE-POL-061-2XL",
+          "name": "Size 2XL",
+          "options": {
+            "Size": "2XL"
+          },
+          "priceKobo": 700000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1kRS75tFX6dGELTz03eBfmsmHoDLCRtLQ.jpg"
+        },
+        {
+          "id": "arie-drive-61-v4",
+          "sku": "ARIE-POL-061-3XL",
+          "name": "Size 3XL",
+          "options": {
+            "Size": "3XL"
+          },
+          "priceKobo": 700000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1kRS75tFX6dGELTz03eBfmsmHoDLCRtLQ.jpg"
+        },
+        {
+          "id": "arie-drive-61-v5",
+          "sku": "ARIE-POL-061-4XL",
+          "name": "Size 4XL",
+          "options": {
+            "Size": "4XL"
+          },
+          "priceKobo": 700000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1kRS75tFX6dGELTz03eBfmsmHoDLCRtLQ.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-62",
+    "name": "Bayonetta Optical Glasses",
+    "slug": "bayonetta-optical-glasses",
+    "subtitle": "Slim Aesthetic Runway Eyewear with Blue-Block Lenses",
+    "category": "eyewear",
+    "tags": [
+      "eyewear",
+      "authentic",
+      "luxury",
+      "accessories"
+    ],
+    "price": 14000,
+    "description": "Distinctive silhouette featuring impact-resistant tinted lenses with full UV400 solar shielding and ergonomic nose bridge pads.",
+    "craftsmanship": "Precision CNC-cut acetate with spring hinges and UV400 anti-reflective protective coating.",
+    "materials": [
+      "Handcrafted Acetate",
+      "CR-39 UV400 Polycarbonate Lenses"
+    ],
+    "dimensions": "Lens: 52mm | Bridge: 18mm | Temple: 142mm",
+    "inStock": true,
+    "stockCount": 17,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1jp3098Im00_JOJ_-CekLWt4CqkpQcQtu.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 17,
+    "sku": "ARIE-EYE-062",
+    "specs": {
+      "UV Protection": "100% UV400 Shield",
+      "Case": "Protective Hard Case & Cleaning Cloth"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Frame & Lens Finish",
+          "values": [
+            "Classic Black Frame / UV Tint",
+            "Gold Accent Frame / Clear Blue-Cut"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-62-v1",
+          "sku": "ARIE-EYE-062-FR1",
+          "name": "Classic Black Frame / UV Tint",
+          "options": {
+            "Frame & Lens Finish": "Classic Black Frame / UV Tint"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1jp3098Im00_JOJ_-CekLWt4CqkpQcQtu.jpg"
+        },
+        {
+          "id": "arie-drive-62-v2",
+          "sku": "ARIE-EYE-062-FR2",
+          "name": "Gold Accent Frame / Clear Blue-Cut",
+          "options": {
+            "Frame & Lens Finish": "Gold Accent Frame / Clear Blue-Cut"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 8,
+          "image": "/images/drive-products/1jp3098Im00_JOJ_-CekLWt4CqkpQcQtu.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-63",
+    "name": "Classic Polo T-Shirt",
+    "slug": "classic-polo-t-shirt",
+    "subtitle": "Everyday Casual Luxury Button-Placket Polo",
+    "category": "polo-shirts",
+    "tags": [
+      "polo-shirts",
+      "authentic",
+      "luxury"
+    ],
+    "price": 7500,
+    "description": "Premium high-density cotton weave with tailored collar and ribbed sleeve cuffs. Perfect for casual business, travel, and social outings. Available in sizes: M, L, XL, XXL, XXXL, XXXXL.",
+    "craftsmanship": "Double-mercerized combed cotton piqué with reinforced collar ribs and mother-of-pearl buttons.",
+    "materials": [
+      "100% Ring-Spun Combed Cotton",
+      "Lustrous Piqué Knit"
+    ],
+    "dimensions": "Regular & Extended Comfort Fit",
+    "inStock": true,
+    "stockCount": 18,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1mtrs4jvjWhcPE3P2FodKbLKWEmcoQ22L.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 19,
+    "sku": "ARIE-POL-063",
+    "specs": {
+      "Collar": "Ribbed Knit Polo Collar",
+      "Weave": "Heavyweight Piqué",
+      "Fit": "Regular Tailored Fit"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "M",
+            "L",
+            "XL",
+            "2XL",
+            "3XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-63-v1",
+          "sku": "ARIE-POL-063-M",
+          "name": "Size M",
+          "options": {
+            "Size": "M"
+          },
+          "priceKobo": 750000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1mtrs4jvjWhcPE3P2FodKbLKWEmcoQ22L.jpg"
+        },
+        {
+          "id": "arie-drive-63-v2",
+          "sku": "ARIE-POL-063-L",
+          "name": "Size L",
+          "options": {
+            "Size": "L"
+          },
+          "priceKobo": 750000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1mtrs4jvjWhcPE3P2FodKbLKWEmcoQ22L.jpg"
+        },
+        {
+          "id": "arie-drive-63-v3",
+          "sku": "ARIE-POL-063-XL",
+          "name": "Size XL",
+          "options": {
+            "Size": "XL"
+          },
+          "priceKobo": 750000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1mtrs4jvjWhcPE3P2FodKbLKWEmcoQ22L.jpg"
+        },
+        {
+          "id": "arie-drive-63-v4",
+          "sku": "ARIE-POL-063-2XL",
+          "name": "Size 2XL",
+          "options": {
+            "Size": "2XL"
+          },
+          "priceKobo": 750000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1mtrs4jvjWhcPE3P2FodKbLKWEmcoQ22L.jpg"
+        },
+        {
+          "id": "arie-drive-63-v5",
+          "sku": "ARIE-POL-063-3XL",
+          "name": "Size 3XL",
+          "options": {
+            "Size": "3XL"
+          },
+          "priceKobo": 750000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1mtrs4jvjWhcPE3P2FodKbLKWEmcoQ22L.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-64",
+    "name": "Summer Sun Hat",
+    "slug": "summer-sun-hat",
+    "subtitle": "Lightweight Breathable Casual Headwear",
+    "category": "caps-hats",
+    "tags": [
+      "caps-hats",
+      "authentic",
+      "luxury",
+      "accessories",
+      "featured"
+    ],
+    "price": 4000,
+    "description": "Iconic styling featuring precision-embroidered motifs, pre-curved visor, and adjustable back closure for a custom comfortable fit.",
+    "craftsmanship": "Structured 6-panel design with high-density embroidery and reinforced buckram front.",
+    "materials": [
+      "100% Cotton Twill",
+      "Breathable Polyester Mesh"
+    ],
+    "dimensions": "Circumference: 56-60cm Adjustable",
+    "inStock": true,
+    "stockCount": 19,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1GlO5yRivlnTrjF_M_B7s27U8b-0LCE8R.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 21,
+    "sku": "ARIE-CAP-064",
+    "specs": {
+      "Profile": "Structured Mid-Crown",
+      "Closure": "Adjustable Strap / Snap",
+      "Visor": "Curved Brim"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Head Fit",
+          "values": [
+            "Standard One-Size (Adjustable Strap)",
+            "Fitted Crown Edition"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-64-v1",
+          "sku": "ARIE-CAP-064-C1",
+          "name": "Standard One-Size (Adjustable Strap)",
+          "options": {
+            "Head Fit": "Standard One-Size (Adjustable Strap)"
+          },
+          "priceKobo": 400000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1GlO5yRivlnTrjF_M_B7s27U8b-0LCE8R.jpg"
+        },
+        {
+          "id": "arie-drive-64-v2",
+          "sku": "ARIE-CAP-064-C2",
+          "name": "Fitted Crown Edition",
+          "options": {
+            "Head Fit": "Fitted Crown Edition"
+          },
+          "priceKobo": 400000,
+          "stockCount": 9,
+          "image": "/images/drive-products/1GlO5yRivlnTrjF_M_B7s27U8b-0LCE8R.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-65",
+    "name": "Unisex Streetwear Face Cap",
+    "slug": "unisex-streetwear-face-cap",
+    "subtitle": "Vintage Washed Cotton Adjustable Strapback",
+    "category": "caps-hats",
+    "tags": [
+      "caps-hats",
+      "authentic",
+      "luxury",
+      "accessories",
+      "bestseller"
+    ],
+    "price": 10000,
+    "originalPrice": 11500,
+    "description": "Iconic styling featuring precision-embroidered motifs, pre-curved visor, and adjustable back closure for a custom comfortable fit.",
+    "craftsmanship": "Structured 6-panel design with high-density embroidery and reinforced buckram front.",
+    "materials": [
+      "100% Cotton Twill",
+      "Breathable Polyester Mesh"
+    ],
+    "dimensions": "Circumference: 56-60cm Adjustable",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1Wf5dv99Ju1T6jHWbuOvDnAd8HLlwcDaY.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 23,
+    "sku": "ARIE-CAP-065",
+    "specs": {
+      "Profile": "Structured Mid-Crown",
+      "Closure": "Adjustable Strap / Snap",
+      "Visor": "Curved Brim"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Head Fit",
+          "values": [
+            "Standard One-Size (Adjustable Strap)",
+            "Fitted Crown Edition"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-65-v1",
+          "sku": "ARIE-CAP-065-C1",
+          "name": "Standard One-Size (Adjustable Strap)",
+          "options": {
+            "Head Fit": "Standard One-Size (Adjustable Strap)"
+          },
+          "priceKobo": 1000000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1Wf5dv99Ju1T6jHWbuOvDnAd8HLlwcDaY.jpg"
+        },
+        {
+          "id": "arie-drive-65-v2",
+          "sku": "ARIE-CAP-065-C2",
+          "name": "Fitted Crown Edition",
+          "options": {
+            "Head Fit": "Fitted Crown Edition"
+          },
+          "priceKobo": 1000000,
+          "stockCount": 6,
+          "image": "/images/drive-products/1Wf5dv99Ju1T6jHWbuOvDnAd8HLlwcDaY.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-66",
+    "name": "Couture Wide-Brim Hat",
+    "slug": "couture-wide-brim-hat",
+    "subtitle": "Statement Event & Church Couture Headpiece",
+    "category": "caps-hats",
+    "tags": [
+      "caps-hats",
+      "authentic",
+      "luxury",
+      "accessories",
+      "new-arrival"
+    ],
+    "price": 25000,
+    "description": "Iconic styling featuring precision-embroidered motifs, pre-curved visor, and adjustable back closure for a custom comfortable fit.",
+    "craftsmanship": "Structured 6-panel design with high-density embroidery and reinforced buckram front.",
+    "materials": [
+      "100% Cotton Twill",
+      "Breathable Polyester Mesh"
+    ],
+    "dimensions": "Circumference: 56-60cm Adjustable",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/15nTWP5_W3uyKIX1DWI7A2sv3hr5zhMfQ.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 25,
+    "sku": "ARIE-CAP-066",
+    "specs": {
+      "Profile": "Structured Mid-Crown",
+      "Closure": "Adjustable Strap / Snap",
+      "Visor": "Curved Brim"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Head Fit",
+          "values": [
+            "Standard One-Size (Adjustable Strap)",
+            "Fitted Crown Edition"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-66-v1",
+          "sku": "ARIE-CAP-066-C1",
+          "name": "Standard One-Size (Adjustable Strap)",
+          "options": {
+            "Head Fit": "Standard One-Size (Adjustable Strap)"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/15nTWP5_W3uyKIX1DWI7A2sv3hr5zhMfQ.jpg"
+        },
+        {
+          "id": "arie-drive-66-v2",
+          "sku": "ARIE-CAP-066-C2",
+          "name": "Fitted Crown Edition",
+          "options": {
+            "Head Fit": "Fitted Crown Edition"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 6,
+          "image": "/images/drive-products/15nTWP5_W3uyKIX1DWI7A2sv3hr5zhMfQ.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-67",
+    "name": "Unisex Polo T-Shirt",
+    "slug": "unisex-polo-t-shirt",
+    "subtitle": "Contemporary Tailored Fit Unisex Polo",
+    "category": "polo-shirts",
+    "tags": [
+      "polo-shirts",
+      "authentic",
+      "luxury",
+      "featured"
+    ],
+    "price": 9500,
+    "description": "Premium high-density cotton weave with tailored collar and ribbed sleeve cuffs. Perfect for casual business, travel, and social outings. Available in sizes: M, L, XL, XXL, XXXL, XXXXL.",
+    "craftsmanship": "Double-mercerized combed cotton piqué with reinforced collar ribs and mother-of-pearl buttons.",
+    "materials": [
+      "100% Ring-Spun Combed Cotton",
+      "Lustrous Piqué Knit"
+    ],
+    "dimensions": "Regular & Extended Comfort Fit",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1nXPDhN8Jd2kOrPKhgFY07gRJgzmlJV2I.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 27,
+    "sku": "ARIE-POL-067",
+    "specs": {
+      "Collar": "Ribbed Knit Polo Collar",
+      "Weave": "Heavyweight Piqué",
+      "Fit": "Regular Tailored Fit"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "M",
+            "L",
+            "XL",
+            "2XL",
+            "3XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-67-v1",
+          "sku": "ARIE-POL-067-M",
+          "name": "Size M",
+          "options": {
+            "Size": "M"
+          },
+          "priceKobo": 950000,
+          "stockCount": 3,
+          "image": "/images/drive-products/1nXPDhN8Jd2kOrPKhgFY07gRJgzmlJV2I.jpg"
+        },
+        {
+          "id": "arie-drive-67-v2",
+          "sku": "ARIE-POL-067-L",
+          "name": "Size L",
+          "options": {
+            "Size": "L"
+          },
+          "priceKobo": 950000,
+          "stockCount": 3,
+          "image": "/images/drive-products/1nXPDhN8Jd2kOrPKhgFY07gRJgzmlJV2I.jpg"
+        },
+        {
+          "id": "arie-drive-67-v3",
+          "sku": "ARIE-POL-067-XL",
+          "name": "Size XL",
+          "options": {
+            "Size": "XL"
+          },
+          "priceKobo": 950000,
+          "stockCount": 3,
+          "image": "/images/drive-products/1nXPDhN8Jd2kOrPKhgFY07gRJgzmlJV2I.jpg"
+        },
+        {
+          "id": "arie-drive-67-v4",
+          "sku": "ARIE-POL-067-2XL",
+          "name": "Size 2XL",
+          "options": {
+            "Size": "2XL"
+          },
+          "priceKobo": 950000,
+          "stockCount": 3,
+          "image": "/images/drive-products/1nXPDhN8Jd2kOrPKhgFY07gRJgzmlJV2I.jpg"
+        },
+        {
+          "id": "arie-drive-67-v5",
+          "sku": "ARIE-POL-067-3XL",
+          "name": "Size 3XL",
+          "options": {
+            "Size": "3XL"
+          },
+          "priceKobo": 950000,
+          "stockCount": 3,
+          "image": "/images/drive-products/1nXPDhN8Jd2kOrPKhgFY07gRJgzmlJV2I.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-68",
+    "name": "Embroidered Face Cap",
+    "slug": "embroidered-face-cap",
+    "subtitle": "Heavy Twill Cotton Baseball Cap",
+    "category": "caps-hats",
+    "tags": [
+      "caps-hats",
+      "authentic",
+      "luxury",
+      "accessories"
+    ],
+    "price": 10000,
+    "description": "Iconic styling featuring precision-embroidered motifs, pre-curved visor, and adjustable back closure for a custom comfortable fit.",
+    "craftsmanship": "Structured 6-panel design with high-density embroidery and reinforced buckram front.",
+    "materials": [
+      "100% Cotton Twill",
+      "Breathable Polyester Mesh"
+    ],
+    "dimensions": "Circumference: 56-60cm Adjustable",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/12aQrIJgaS1DjSdGK-cYMX3bnCFtPpjnO.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 29,
+    "sku": "ARIE-CAP-068",
+    "specs": {
+      "Profile": "Structured Mid-Crown",
+      "Closure": "Adjustable Strap / Snap",
+      "Visor": "Curved Brim"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Head Fit",
+          "values": [
+            "Standard One-Size (Adjustable Strap)",
+            "Fitted Crown Edition"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-68-v1",
+          "sku": "ARIE-CAP-068-C1",
+          "name": "Standard One-Size (Adjustable Strap)",
+          "options": {
+            "Head Fit": "Standard One-Size (Adjustable Strap)"
+          },
+          "priceKobo": 1000000,
+          "stockCount": 7,
+          "image": "/images/drive-products/12aQrIJgaS1DjSdGK-cYMX3bnCFtPpjnO.jpg"
+        },
+        {
+          "id": "arie-drive-68-v2",
+          "sku": "ARIE-CAP-068-C2",
+          "name": "Fitted Crown Edition",
+          "options": {
+            "Head Fit": "Fitted Crown Edition"
+          },
+          "priceKobo": 1000000,
+          "stockCount": 7,
+          "image": "/images/drive-products/12aQrIJgaS1DjSdGK-cYMX3bnCFtPpjnO.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-69",
+    "name": "Signature Polo Shirt (4XL)",
+    "slug": "signature-polo-shirt-4xl",
+    "subtitle": "Plus-Size 4XL Luxury Heavyweight Polo",
+    "category": "polo-shirts",
+    "tags": [
+      "polo-shirts",
+      "authentic",
+      "luxury",
+      "bestseller"
+    ],
+    "price": 13000,
+    "originalPrice": 15000,
+    "description": "Premium high-density cotton weave with tailored collar and ribbed sleeve cuffs. Perfect for casual business, travel, and social outings. Available in sizes: 4XL.",
+    "craftsmanship": "Double-mercerized combed cotton piqué with reinforced collar ribs and mother-of-pearl buttons.",
+    "materials": [
+      "100% Ring-Spun Combed Cotton",
+      "Lustrous Piqué Knit"
+    ],
+    "dimensions": "Regular & Extended Comfort Fit",
+    "inStock": true,
+    "stockCount": 16,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1gd7eYlOcs-bhvv_rMNju8ZCs0OFxhfyN.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 31,
+    "sku": "ARIE-POL-069",
+    "specs": {
+      "Collar": "Ribbed Knit Polo Collar",
+      "Weave": "Heavyweight Piqué",
+      "Fit": "Regular Tailored Fit"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "4XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-69-v1",
+          "sku": "ARIE-POL-069-4XL",
+          "name": "Size 4XL",
+          "options": {
+            "Size": "4XL"
+          },
+          "priceKobo": 1300000,
+          "stockCount": 17,
+          "image": "/images/drive-products/1gd7eYlOcs-bhvv_rMNju8ZCs0OFxhfyN.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-70",
+    "name": "Quality Cotton T-Shirt (3XL)",
+    "slug": "quality-cotton-t-shirt-3xl",
+    "subtitle": "Crewneck 3XL Organic Cotton T-Shirt",
+    "category": "polo-shirts",
+    "tags": [
+      "polo-shirts",
+      "authentic",
+      "luxury",
+      "featured"
+    ],
+    "price": 13000,
+    "description": "Premium high-density cotton weave with tailored collar and ribbed sleeve cuffs. Perfect for casual business, travel, and social outings. Available in sizes: 3XL.",
+    "craftsmanship": "Double-mercerized combed cotton piqué with reinforced collar ribs and mother-of-pearl buttons.",
+    "materials": [
+      "100% Ring-Spun Combed Cotton",
+      "Lustrous Piqué Knit"
+    ],
+    "dimensions": "Regular & Extended Comfort Fit",
+    "inStock": true,
+    "stockCount": 17,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1SY43Mpef7gDimtdVulcPJeUJY1eIuFa2.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 33,
+    "sku": "ARIE-POL-070",
+    "specs": {
+      "Collar": "Ribbed Knit Polo Collar",
+      "Weave": "Heavyweight Piqué",
+      "Fit": "Regular Tailored Fit"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "3XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-70-v1",
+          "sku": "ARIE-POL-070-3XL",
+          "name": "Size 3XL",
+          "options": {
+            "Size": "3XL"
+          },
+          "priceKobo": 1300000,
+          "stockCount": 18,
+          "image": "/images/drive-products/1SY43Mpef7gDimtdVulcPJeUJY1eIuFa2.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-71",
+    "name": "Male Polo T-Shirt (2XL)",
+    "slug": "male-polo-t-shirt-2xl",
+    "subtitle": "Relaxed Fit 2XL Piqué Designer Polo Shirt",
+    "category": "polo-shirts",
+    "tags": [
+      "polo-shirts",
+      "authentic",
+      "luxury",
+      "new-arrival"
+    ],
+    "price": 13000,
+    "description": "Premium high-density cotton weave with tailored collar and ribbed sleeve cuffs. Perfect for casual business, travel, and social outings. Available in sizes: 2XL.",
+    "craftsmanship": "Double-mercerized combed cotton piqué with reinforced collar ribs and mother-of-pearl buttons.",
+    "materials": [
+      "100% Ring-Spun Combed Cotton",
+      "Lustrous Piqué Knit"
+    ],
+    "dimensions": "Regular & Extended Comfort Fit",
+    "inStock": true,
+    "stockCount": 18,
+    "isNew": true,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1JlwQJsbO_8Y7PJf3tWuwAjIFFT-k4AG3.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 35,
+    "sku": "ARIE-POL-071",
+    "specs": {
+      "Collar": "Ribbed Knit Polo Collar",
+      "Weave": "Heavyweight Piqué",
+      "Fit": "Regular Tailored Fit"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "2XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-71-v1",
+          "sku": "ARIE-POL-071-2XL",
+          "name": "Size 2XL",
+          "options": {
+            "Size": "2XL"
+          },
+          "priceKobo": 1300000,
+          "stockCount": 19,
+          "image": "/images/drive-products/1JlwQJsbO_8Y7PJf3tWuwAjIFFT-k4AG3.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-72",
+    "name": "Quality Polo T-Shirt (3XL)",
+    "slug": "quality-polo-t-shirt-3xl",
+    "subtitle": "Classic Navy & Black Striped 3XL Polo",
+    "category": "polo-shirts",
+    "tags": [
+      "polo-shirts",
+      "authentic",
+      "luxury"
+    ],
+    "price": 13000,
+    "description": "Premium high-density cotton weave with tailored collar and ribbed sleeve cuffs. Perfect for casual business, travel, and social outings. Available in sizes: 3XL.",
+    "craftsmanship": "Double-mercerized combed cotton piqué with reinforced collar ribs and mother-of-pearl buttons.",
+    "materials": [
+      "100% Ring-Spun Combed Cotton",
+      "Lustrous Piqué Knit"
+    ],
+    "dimensions": "Regular & Extended Comfort Fit",
+    "inStock": true,
+    "stockCount": 19,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1lKbAZSvLmhQ8ab-QfT2f-mLcPrZlqwbs.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 37,
+    "sku": "ARIE-POL-072",
+    "specs": {
+      "Collar": "Ribbed Knit Polo Collar",
+      "Weave": "Heavyweight Piqué",
+      "Fit": "Regular Tailored Fit"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "3XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-72-v1",
+          "sku": "ARIE-POL-072-3XL",
+          "name": "Size 3XL",
+          "options": {
+            "Size": "3XL"
+          },
+          "priceKobo": 1300000,
+          "stockCount": 20,
+          "image": "/images/drive-products/1lKbAZSvLmhQ8ab-QfT2f-mLcPrZlqwbs.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-73",
+    "name": "Retro Arsenal Match Jersey",
+    "slug": "retro-arsenal-match-jersey",
+    "subtitle": "Highbury Vintage Invincibles Era Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "featured",
+      "bestseller"
+    ],
+    "price": 25000,
+    "originalPrice": 28500,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave. Available in sizes: M, L, XL, XXL, XXXL, XXXXL.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 12,
+    "isNew": false,
+    "isFeatured": true,
+    "isBestseller": true,
+    "images": [
+      "/images/drive-products/1pRcKdfADwvwBm12LbN2kxgJIy16yQ0d7.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 39,
+    "sku": "ARIE-JER-073",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "M",
+            "L",
+            "XL",
+            "2XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-73-v1",
+          "sku": "ARIE-JER-073-M",
+          "name": "Size M",
+          "options": {
+            "Size": "M"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1pRcKdfADwvwBm12LbN2kxgJIy16yQ0d7.jpg"
+        },
+        {
+          "id": "arie-drive-73-v2",
+          "sku": "ARIE-JER-073-L",
+          "name": "Size L",
+          "options": {
+            "Size": "L"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1pRcKdfADwvwBm12LbN2kxgJIy16yQ0d7.jpg"
+        },
+        {
+          "id": "arie-drive-73-v3",
+          "sku": "ARIE-JER-073-XL",
+          "name": "Size XL",
+          "options": {
+            "Size": "XL"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1pRcKdfADwvwBm12LbN2kxgJIy16yQ0d7.jpg"
+        },
+        {
+          "id": "arie-drive-73-v4",
+          "sku": "ARIE-JER-073-2XL",
+          "name": "Size 2XL",
+          "options": {
+            "Size": "2XL"
+          },
+          "priceKobo": 2500000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1pRcKdfADwvwBm12LbN2kxgJIy16yQ0d7.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-74",
+    "name": "Lakers Bryant #24 Basketball Jersey",
+    "slug": "lakers-bryant-24-basketball-jersey",
+    "subtitle": "Kobe Memorial Yellow & Purple Court Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
+    ],
+    "price": 14000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 13,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1D1w5sC3PyM9B3AqKPrdlDF-VHyAoMUQ7.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 41,
+    "sku": "ARIE-JER-074",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "Small (S)",
+            "Medium (M)",
+            "Large (L)",
+            "Extra Large (XL)",
+            "2X Large (2XL)"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-74-v1",
+          "sku": "ARIE-JER-074-SmallS",
+          "name": "Size Small (S)",
+          "options": {
+            "Size": "Small (S)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1D1w5sC3PyM9B3AqKPrdlDF-VHyAoMUQ7.jpg"
+        },
+        {
+          "id": "arie-drive-74-v2",
+          "sku": "ARIE-JER-074-MediumM",
+          "name": "Size Medium (M)",
+          "options": {
+            "Size": "Medium (M)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1D1w5sC3PyM9B3AqKPrdlDF-VHyAoMUQ7.jpg"
+        },
+        {
+          "id": "arie-drive-74-v3",
+          "sku": "ARIE-JER-074-LargeL",
+          "name": "Size Large (L)",
+          "options": {
+            "Size": "Large (L)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1D1w5sC3PyM9B3AqKPrdlDF-VHyAoMUQ7.jpg"
+        },
+        {
+          "id": "arie-drive-74-v4",
+          "sku": "ARIE-JER-074-ExtraLargeXL",
+          "name": "Size Extra Large (XL)",
+          "options": {
+            "Size": "Extra Large (XL)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1D1w5sC3PyM9B3AqKPrdlDF-VHyAoMUQ7.jpg"
+        },
+        {
+          "id": "arie-drive-74-v5",
+          "sku": "ARIE-JER-074-2XLarge2XL",
+          "name": "Size 2X Large (2XL)",
+          "options": {
+            "Size": "2X Large (2XL)"
+          },
+          "priceKobo": 1400000,
+          "stockCount": 4,
+          "image": "/images/drive-products/1D1w5sC3PyM9B3AqKPrdlDF-VHyAoMUQ7.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-75",
+    "name": "Barcelona Retro Polo Collar Jersey",
+    "slug": "barcelona-retro-polo-collar-jersey",
+    "subtitle": "Collared Retro Camp Nou Edition Jersey",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury"
+    ],
+    "price": 24000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 14,
+    "isNew": false,
+    "isFeatured": false,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1xIibsQtJIMIMPk1DpaMEpbjYVxNMmt5z.jpg"
+    ],
+    "rating": 5,
+    "reviewsCount": 43,
+    "sku": "ARIE-JER-075",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "M",
+            "L",
+            "XL",
+            "2XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-75-v1",
+          "sku": "ARIE-JER-075-M",
+          "name": "Size M",
+          "options": {
+            "Size": "M"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1xIibsQtJIMIMPk1DpaMEpbjYVxNMmt5z.jpg"
+        },
+        {
+          "id": "arie-drive-75-v2",
+          "sku": "ARIE-JER-075-L",
+          "name": "Size L",
+          "options": {
+            "Size": "L"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1xIibsQtJIMIMPk1DpaMEpbjYVxNMmt5z.jpg"
+        },
+        {
+          "id": "arie-drive-75-v3",
+          "sku": "ARIE-JER-075-XL",
+          "name": "Size XL",
+          "options": {
+            "Size": "XL"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1xIibsQtJIMIMPk1DpaMEpbjYVxNMmt5z.jpg"
+        },
+        {
+          "id": "arie-drive-75-v4",
+          "sku": "ARIE-JER-075-2XL",
+          "name": "Size 2XL",
+          "options": {
+            "Size": "2XL"
+          },
+          "priceKobo": 2400000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1xIibsQtJIMIMPk1DpaMEpbjYVxNMmt5z.jpg"
+        }
+      ]
+    }
+  },
+  {
+    "id": "arie-drive-76",
+    "name": "Liverpool Red Home Match Jersey",
+    "slug": "liverpool-red-home-match-jersey",
+    "subtitle": "Red Home Match Edition Performance Shirt",
+    "category": "jerseys",
+    "tags": [
+      "jerseys",
+      "authentic",
+      "luxury",
+      "featured",
+      "new-arrival"
+    ],
+    "price": 16000,
+    "description": "Official club styling engineered for peak comfort, ventilation, and style. Features heat-applied badges and moisture-wicking aerodynamic weave.",
+    "craftsmanship": "Moisture-wicking Aeroready/Dri-FIT micro-mesh with high-definition embroidered crest and heat-applied sponsor detailing.",
+    "materials": [
+      "100% Recycled Polyester",
+      "Performance Mesh Inserts"
+    ],
+    "dimensions": "Standard Athletic Tailored Fit",
+    "inStock": true,
+    "stockCount": 15,
+    "isNew": true,
+    "isFeatured": true,
+    "isBestseller": false,
+    "images": [
+      "/images/drive-products/1IhOrcKrecMDY1esH-e6mkf1gzNvoVkS3.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 45,
+    "sku": "ARIE-JER-076",
+    "specs": {
+      "Fabric": "Breathable Mesh",
+      "Fit": "Athletic Modern Cut",
+      "Care": "Machine wash cold inside out"
+    },
+    "variants": {
+      "types": [
+        {
+          "type": "Size",
+          "values": [
+            "M",
+            "L",
+            "XL",
+            "2XL"
+          ]
+        }
+      ],
+      "combinations": [
+        {
+          "id": "arie-drive-76-v1",
+          "sku": "ARIE-JER-076-M",
+          "name": "Size M",
+          "options": {
+            "Size": "M"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1IhOrcKrecMDY1esH-e6mkf1gzNvoVkS3.jpg"
+        },
+        {
+          "id": "arie-drive-76-v2",
+          "sku": "ARIE-JER-076-L",
+          "name": "Size L",
+          "options": {
+            "Size": "L"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1IhOrcKrecMDY1esH-e6mkf1gzNvoVkS3.jpg"
+        },
+        {
+          "id": "arie-drive-76-v3",
+          "sku": "ARIE-JER-076-XL",
+          "name": "Size XL",
+          "options": {
+            "Size": "XL"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1IhOrcKrecMDY1esH-e6mkf1gzNvoVkS3.jpg"
+        },
+        {
+          "id": "arie-drive-76-v4",
+          "sku": "ARIE-JER-076-2XL",
+          "name": "Size 2XL",
+          "options": {
+            "Size": "2XL"
+          },
+          "priceKobo": 1600000,
+          "stockCount": 5,
+          "image": "/images/drive-products/1IhOrcKrecMDY1esH-e6mkf1gzNvoVkS3.jpg"
+        }
+      ]
     }
   }
 ];
 
-export const CURRENCY_RATES: Record<string, { symbol: string; rate: number; name: string }> = {
-  NGN: { symbol: '₦', rate: 1.0, name: 'NGN (₦)' },
-  USD: { symbol: '$', rate: 0.00067, name: 'USD ($)' },
-  GBP: { symbol: '£', rate: 0.00052, name: 'GBP (£)' },
-  EUR: { symbol: '€', rate: 0.00061, name: 'EUR (€)' }
-};
-
 export const BUSINESS_INFO = {
-  name: 'Arie Jewelry and Accessories',
-  shortName: 'Arie Jewelry',
-  tagline: 'Authentic, Affordable, and Elegant Jewelry & Accessories',
-  address: 'Opposite Army Barracks, Lokoja, Kogi State, Nigeria',
-  location: 'Lokoja, Kogi State, Nigeria',
-  whatsapp: '08164907596',
-  whatsappUrl: 'https://wa.me/2348164907596',
-  phone: '+234 816 490 7596',
-  instagram: '@ariejewelryandaccessories',
-  instagramUrl: 'https://www.instagram.com/ariejewelryandaccessories?igsh=MWxzaXo5cHhxOGthcQ%3D%3D&utm_source=qr',
-  tiktok: '@arie_jewelry',
-  tiktokUrl: 'https://www.tiktok.com/@arie_jewelry?_r=1&_t=ZS-9APQcbVu4zY',
-  facebook: 'Arie Jewelry and Accessories',
-  facebookUrl: 'https://www.facebook.com/share/19dba575nT/?mibextid=wwXIfr',
-  deliveryPromise: 'Nationwide Delivery across all 36 States in Nigeria'
+  name: "Arie Jewelry and Accessories",
+  phone: "08164907596",
+  whatsapp: "08164907596",
+  whatsappUrl: "https://wa.me/2348164907596",
+  address: "Nigeria (Nationwide Rapid Delivery to all 36 States & FCT)",
+  tagline: "Authentic, Affordable & Elegant Jewelry, Watches & Curations"
 };

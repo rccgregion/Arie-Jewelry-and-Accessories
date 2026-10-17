@@ -22,7 +22,7 @@ export const AboutPage: React.FC = () => {
   const { setActivePage, setSelectedCategory } = useShop();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  const handleShopNow = (cat: 'all' | 'watches' | 'jewelry' | 'accessories' | 'jerseys' = 'all') => {
+  const handleShopNow = (cat: string = 'all') => {
     setSelectedCategory(cat);
     setActivePage('shop');
     setTimeout(() => {

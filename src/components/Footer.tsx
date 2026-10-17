@@ -5,13 +5,38 @@ import { BUSINESS_INFO } from '../data/products';
 import { ARIE_LOGO_DATA_URI } from '../data/logo';
 
 export const Footer: React.FC = () => {
-  const { setSelectedCategory, setIsVIPModalOpen, setActivePage } = useShop();
+  const { 
+    setSelectedCategory, 
+    setIsVIPModalOpen, 
+    setActivePage,
+    setFilterOptions,
+    showToast,
+    categories 
+  } = useShop();
 
-  const handleNav = (cat: 'watches' | 'jewelry' | 'accessories' | 'jerseys' | 'new-arrivals') => {
+  const handleNav = (catId: string) => {
     setActivePage('shop');
-    setSelectedCategory(cat);
-    const el = document.getElementById('catalog-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    setFilterOptions(prev => ({
+      ...prev,
+      searchQuery: '',
+      material: undefined
+    }));
+    setSelectedCategory(catId);
+
+    const catObj = categories.find(c => c.id === catId || c.slug === catId);
+    const catName = catObj ? catObj.name : catId.replace('-', ' ').toUpperCase();
+    showToast(`Displaying ${catName}`);
+
+    setTimeout(() => {
+      const el = document.getElementById('catalog-section');
+      if (el) {
+        const yOffset = -70;
+        const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 350, behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const handleAbout = () => {
@@ -120,27 +145,37 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-xs text-stone-600 dark:text-stone-400">
               <li>
                 <button onClick={() => handleNav('watches')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
-                  Wristwatches &amp; Chronographs
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNav('jewelry')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
-                  Necklaces &amp; Pendants
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNav('jewelry')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
-                  Earrings &amp; Rings
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNav('accessories')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
-                  Cufflinks, Lapels &amp; Ties
+                  Wristwatches &amp; Smartwatches
                 </button>
               </li>
               <li>
                 <button onClick={() => handleNav('jerseys')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
-                  Football Club Jerseys
+                  Football &amp; Sports Jerseys
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('polo-shirts')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
+                  Polo Shirts &amp; Tees
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('caps-hats')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
+                  Caps &amp; Hats
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('rings')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
+                  Rings &amp; Knuckle Bands
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('necklaces')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
+                  Necklaces &amp; Chains
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('belts')} className="hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition">
+                  Designer Belts
                 </button>
               </li>
             </ul>
@@ -216,6 +251,18 @@ export const Footer: React.FC = () => {
             <span>© 2026 Arie Jewelry and Accessories. All rights reserved.</span>
             <span className="hidden sm:inline">·</span>
             <span>Lokoja, Kogi State, Nigeria</span>
+            <span className="text-stone-300 dark:text-stone-800">·</span>
+            <a
+              href="/admin/login"
+              onClick={(e) => {
+                e.preventDefault();
+                setActivePage('admin-login');
+              }}
+              className="text-stone-400 dark:text-stone-600 hover:text-[#8c6b2d] dark:hover:text-[#d4af37] transition text-[11px] underline-offset-2 hover:underline"
+              aria-label="Admin Portal Login"
+            >
+              Admin
+            </a>
           </div>
 
           <div className="flex items-center gap-2 text-[#8c6b2d] dark:text-[#d4af37]">

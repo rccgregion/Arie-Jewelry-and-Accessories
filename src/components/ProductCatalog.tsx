@@ -17,6 +17,7 @@ export const ProductCatalog: React.FC = () => {
     setFilterOptions,
     selectedCategory,
     setSelectedCategory,
+    categories: dynamicCategories,
     addToCart,
     toggleWishlist,
     isInWishlist,
@@ -26,16 +27,15 @@ export const ProductCatalog: React.FC = () => {
 
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
 
-  const categories: { id: Category; label: string }[] = [
+  const categories = [
     { id: 'all', label: 'All Curations' },
-    { id: 'watches', label: 'Wristwatches' },
     { id: 'jewelry', label: 'Fine Jewelry' },
     { id: 'accessories', label: 'Accessories' },
-    { id: 'jerseys', label: 'Jerseys' },
+    ...dynamicCategories.map(c => ({ id: c.id, label: c.name })),
     { id: 'new-arrivals', label: 'New Arrivals' }
   ];
 
-  const materials = ['all', 'Gold Tone Stainless Steel', 'Crystal', 'Polished 316L Steel', 'Polyester Match Knit'];
+  const materials = ['all', 'Gold Tone Stainless Steel', 'Crystal', 'Polished 316L Steel', 'Polyester', 'Cotton', 'Leather', 'Acetate'];
 
   const getDirectWhatsAppUrl = (product: Product) => {
     const text = encodeURIComponent(
@@ -64,7 +64,10 @@ export const ProductCatalog: React.FC = () => {
             {categories.map(cat => (
               <button
                 key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
+                onClick={() => {
+                  setFilterOptions(prev => ({ ...prev, searchQuery: '' }));
+                  setSelectedCategory(cat.id);
+                }}
                 className={`px-3.5 py-2 text-xs font-cinzel tracking-[0.14em] uppercase rounded transition whitespace-nowrap ${
                   selectedCategory === cat.id
                     ? 'bg-[#d4af37] text-black font-semibold shadow-md'

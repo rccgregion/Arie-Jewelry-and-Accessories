@@ -4,7 +4,7 @@ import { useShop } from '../context/ShopContext';
 import { Product } from '../types';
 
 export const SearchModal: React.FC = () => {
-  const { isSearchOpen, setIsSearchOpen, products, setQuickViewProduct, formatPrice } = useShop();
+  const { isSearchOpen, setIsSearchOpen, products, categories, setQuickViewProduct, formatPrice, setSelectedCategory } = useShop();
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -36,14 +36,20 @@ export const SearchModal: React.FC = () => {
   if (!isSearchOpen) return null;
 
   const results: Product[] = query.trim()
-    ? products.filter(
-        (p) =>
-          p.name.toLowerCase().includes(query.toLowerCase()) ||
-          p.subtitle.toLowerCase().includes(query.toLowerCase()) ||
-          p.description.toLowerCase().includes(query.toLowerCase()) ||
-          p.category.toLowerCase().includes(query.toLowerCase()) ||
-          p.materials.some((m) => m.toLowerCase().includes(query.toLowerCase()))
-      )
+    ? products.filter((p) => {
+        const q = query.toLowerCase();
+        const catObj = categories.find((c) => c.id === p.category || c.slug === p.category);
+        const categoryName = catObj ? catObj.name.toLowerCase() : '';
+        return (
+          p.name.toLowerCase().includes(q) ||
+          p.subtitle.toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q) ||
+          categoryName.includes(q) ||
+          (p.tags && p.tags.some((t) => t.toLowerCase().includes(q))) ||
+          p.materials.some((m) => m.toLowerCase().includes(q))
+        );
+      })
     : [];
 
   const quickSearches = [
@@ -147,7 +153,7 @@ export const SearchModal: React.FC = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-cinzel text-[9.5px] text-[#8c6b2d] dark:text-[#d4af37] tracking-wider uppercase">
-                        {product.category}
+                        {categories.find((c) => c.id === product.category || c.slug === product.category)?.name || product.category}
                       </span>
                       {product.isNew && (
                         <span className="text-[9px] text-stone-500">· New</span>

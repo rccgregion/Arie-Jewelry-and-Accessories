@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/admin
 
-Sitemap: https://luxora-accessories.com/sitemap.xml
+Sitemap: https://ariejewelry.com/sitemap.xml

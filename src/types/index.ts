@@ -1,14 +1,29 @@
-export type Category = 'all' | 'watches' | 'jewelry' | 'accessories' | 'jerseys' | 'new-arrivals';
+export type Category = string;
 
-export type ActivePage = 'shop' | 'about';
+export interface ProductCategory {
+  id: string; // unique slug identifier
+  name: string; // display name e.g. "Wristwatches"
+  slug: string; // url-friendly slug
+  description?: string;
+  image?: string;
+  displayOrder?: number;
+  productCount?: number;
+  isSystem?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type ActivePage = 'shop' | 'about' | 'admin' | 'admin-login';
 
 export type Currency = 'NGN' | 'USD' | 'GBP' | 'EUR';
 
 export interface Product {
   id: string;
   name: string;
+  slug?: string;
   subtitle: string;
-  category: 'watches' | 'jewelry' | 'accessories' | 'jerseys';
+  category: string;
+  tags?: string[];
   price: number;
   originalPrice?: number;
   description: string;
@@ -26,6 +41,7 @@ export interface Product {
   sku: string;
   specs: Record<string, string>;
   colors?: { name: string; hex: string }[];
+  variants?: any;
 }
 
 export interface CartItem {
