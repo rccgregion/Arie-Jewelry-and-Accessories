@@ -51,15 +51,18 @@ const isProduction = process.env.NODE_ENV === 'production';
 // Ensure database is initialized
 runSeed().catch(err => console.error('Error verifying database seed:', err));
 
-// 1. Core Parsers
+// 1. Core Parsers & CORS
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(cookieParser());
 
-// 2. Security Headers & CSP
+// 2. Security Headers & CSP (Compatible with AI Studio iFrame Dev Environment)
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 

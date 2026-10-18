@@ -127,14 +127,36 @@ export const AdminProducts: React.FC<AdminProductsProps> = ({ initialCategory = 
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
-      const res = await adminFetch('/api/admin/products');
+      let res = await adminFetch('/api/admin/products');
+      if (!res.ok) {
+        // Fallback to public products endpoint if admin call failed
+        res = await fetch('/api/products');
+      }
       const data = await res.json();
-      if (data.success) {
+      if (data.success && Array.isArray(data.products)) {
         setProducts(data.products);
         setFilteredProducts(data.products);
+      } else {
+        // Fallback attempt with public products
+        const pubRes = await fetch('/api/products');
+        const pubData = await pubRes.json();
+        if (pubData.success && Array.isArray(pubData.products)) {
+          setProducts(pubData.products);
+          setFilteredProducts(pubData.products);
+        }
       }
     } catch (err) {
       console.error('Failed to fetch admin products:', err);
+      try {
+        const pubRes = await fetch('/api/products');
+        const pubData = await pubRes.json();
+        if (pubData.success && Array.isArray(pubData.products)) {
+          setProducts(pubData.products);
+          setFilteredProducts(pubData.products);
+        }
+      } catch (e) {
+        console.error('Products fallback error:', e);
+      }
     } finally {
       setIsLoading(false);
     }

@@ -52,18 +52,43 @@ export const AdminCategories: React.FC<AdminCategoriesProps> = ({
 
   const fetchCategories = async () => {
     setIsLoading(true);
+    setStatusMessage(null);
     try {
-      const res = await adminFetch('/api/admin/categories');
+      let res = await adminFetch('/api/admin/categories');
+      if (!res.ok) {
+        // Fallback to public categories API if admin endpoint responded with status error
+        res = await fetch('/api/categories');
+      }
       const data = await res.json();
       if (data.success && Array.isArray(data.categories)) {
         setCategories(data.categories);
         setFilteredCategories(data.categories);
       } else {
-        setStatusMessage({ type: 'error', text: data.error || 'Failed to load categories.' });
+        // Fallback attempt with public categories endpoint
+        const pubRes = await fetch('/api/categories');
+        const pubData = await pubRes.json();
+        if (pubData.success && Array.isArray(pubData.categories)) {
+          setCategories(pubData.categories);
+          setFilteredCategories(pubData.categories);
+        } else {
+          setStatusMessage({ type: 'error', text: data.error || 'Failed to load categories.' });
+        }
       }
     } catch (err) {
       console.error('Error fetching categories:', err);
-      setStatusMessage({ type: 'error', text: 'Network error connecting to categories API.' });
+      // Resilience fallback: retrieve catalog categories directly
+      try {
+        const pubRes = await fetch('/api/categories');
+        const pubData = await pubRes.json();
+        if (pubData.success && Array.isArray(pubData.categories)) {
+          setCategories(pubData.categories);
+          setFilteredCategories(pubData.categories);
+          return;
+        }
+      } catch (e) {
+        console.error('Public categories fallback error:', e);
+      }
+      setStatusMessage({ type: 'error', text: 'Categories could not be loaded. Please refresh.' });
     } finally {
       setIsLoading(false);
     }
