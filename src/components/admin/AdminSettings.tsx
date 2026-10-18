@@ -163,7 +163,7 @@ export const AdminSettings: React.FC = () => {
       {/* Title */}
       <div className="pb-2 border-b border-stone-200 dark:border-stone-800">
         <h1 className="font-cinzel text-xl sm:text-2xl font-bold text-stone-900 dark:text-[#f5f2eb] tracking-wide">
-          SECURITY &amp; ATELIER SETTINGS
+          SECURITY &amp; ADMIN SETTINGS
         </h1>
         <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
           Manage credentials, view real-time security audit trails, and review compliance status

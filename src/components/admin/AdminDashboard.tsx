@@ -71,7 +71,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] text-stone-400">
         <div className="w-8 h-8 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin mb-3" />
-        <span className="text-xs font-cinzel tracking-wider">Computing Atelier Metrics...</span>
+        <span className="text-xs font-cinzel tracking-wider">Computing Admin Metrics...</span>
       </div>
     );
   }

@@ -60,7 +60,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentUser, onLogout 
       {/* Desktop Luxury Sidebar */}
       <aside className="hidden md:flex flex-col w-64 border-r border-stone-200 dark:border-stone-800/80 bg-white dark:bg-[#100f0e] p-6 justify-between flex-shrink-0 z-20">
         <div className="space-y-8">
-          {/* Atelier Brand Header */}
+          {/* Admin Brand Header */}
           <div className="flex items-center gap-3">
             <img
               src={ARIE_LOGO_DATA_URI}
@@ -75,7 +75,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentUser, onLogout 
                 ARIE
               </div>
               <div className="text-[9px] font-sans font-semibold tracking-widest text-[#8c6b2d] dark:text-[#c5a059] uppercase -mt-0.5">
-                ADMIN ATELIER
+                ADMIN
               </div>
             </div>
           </div>

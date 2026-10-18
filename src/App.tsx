@@ -120,7 +120,7 @@ const MainLayout: React.FC = () => {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#0c0b0a] text-stone-400">
           <div className="w-8 h-8 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin mb-3" />
-          <span className="font-cinzel text-xs tracking-widest text-[#d4af37]">VERIFYING ATELIER SESSION...</span>
+          <span className="font-cinzel text-xs tracking-widest text-[#d4af37]">VERIFYING ADMIN SESSION...</span>
         </div>
       );
     }

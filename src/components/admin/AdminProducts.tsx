@@ -532,7 +532,7 @@ export const AdminProducts: React.FC<AdminProductsProps> = ({ initialCategory = 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-stone-200 dark:border-stone-800">
         <div>
           <h1 className="font-cinzel text-xl sm:text-2xl font-bold text-stone-900 dark:text-[#f5f2eb] tracking-wide">
-            PRODUCT ATELIER &amp; INVENTORY
+            PRODUCT ADMIN &amp; INVENTORY
           </h1>
           <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
             Manage authentic catalog items, timed promotions, variants, and stock levels
@@ -619,7 +619,7 @@ export const AdminProducts: React.FC<AdminProductsProps> = ({ initialCategory = 
               {filteredProducts.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-stone-400">
-                    No matching creations found in atelier database.
+                    No matching creations found in admin database.
                   </td>
                 </tr>
               ) : (
@@ -718,7 +718,7 @@ export const AdminProducts: React.FC<AdminProductsProps> = ({ initialCategory = 
           <div className="bg-[#121110] border border-[#d4af37]/30 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl text-[#f5f2eb]">
             <div className="flex items-center justify-between pb-4 border-b border-stone-800">
               <h2 className="font-cinzel text-lg font-bold text-[#f5f2eb]">
-                {editingProduct ? 'EDIT CREATION DETAILS' : 'CREATE NEW ATELIER PIECE'}
+                {editingProduct ? 'EDIT PRODUCT DETAILS' : 'CREATE NEW PRODUCT'}
               </h2>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -1242,7 +1242,7 @@ export const AdminProducts: React.FC<AdminProductsProps> = ({ initialCategory = 
               CONFIRM REMOVAL
             </h3>
             <p className="text-xs text-stone-400 leading-relaxed mb-6">
-              Are you certain you wish to remove this product from the atelier? This action will be recorded in the security audit log.
+              Are you certain you wish to remove this product from the catalog? This action will be recorded in the security audit log.
             </p>
             <div className="flex items-center justify-end gap-3 text-xs font-cinzel">
               <button

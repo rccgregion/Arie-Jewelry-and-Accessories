@@ -134,7 +134,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
               ADMIN PORTAL
             </h1>
             <p className="font-sans text-xs text-[#c5a059] tracking-wider uppercase mt-1">
-              Arie Jewelry &amp; Accessories Atelier
+              Arie Jewelry &amp; Accessories Admin
             </p>
           </div>
 
@@ -231,7 +231,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
               ) : (
                 <>
                   <ShieldCheck className="w-4 h-4" />
-                  <span>Sign In to Atelier</span>
+                  <span>Sign In to Admin</span>
                 </>
               )}
             </button>

@@ -269,7 +269,7 @@ export const AdminCategories: React.FC<AdminCategoriesProps> = ({
               <FolderTree className="w-4 h-4" />
             </span>
             <span className="text-xs font-cinzel tracking-widest text-[#8c6b2d] dark:text-[#d4af37] uppercase font-bold">
-              ATELIER TAXONOMY &amp; NAVIGATION
+              ADMIN TAXONOMY &amp; NAVIGATION
             </span>
           </div>
           <h1 className="font-cinzel text-2xl sm:text-3xl font-bold text-stone-900 dark:text-[#f5f2eb]">
@@ -398,7 +398,7 @@ export const AdminCategories: React.FC<AdminCategoriesProps> = ({
       {isLoading ? (
         <div className="py-20 text-center">
           <div className="w-8 h-8 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-cinzel text-stone-400 tracking-wider">Loading Atelier Categories...</p>
+          <p className="text-xs font-cinzel text-stone-400 tracking-wider">Loading Admin Categories...</p>
         </div>
       ) : filteredCategories.length === 0 ? (
         <div className="py-16 text-center bg-white dark:bg-[#121110] border border-stone-200 dark:border-stone-800 rounded-2xl p-8">
